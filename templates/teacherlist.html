@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+<title>SmartCampus - Teacher List</title>
+<link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+<link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables/datatables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+<div class="main-wrapper">
+    <!-- ...existing Dreamguys teacher list design... -->
+    <div class="container">
+        <h2>Teacher List</h2>
+        
+        <div class="mb-3">
+            <a href="{% url 'add_teacher' %}" class="btn btn-primary">Add New Teacher</a>
+        </div>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for teacher in teachers %}
+                <tr>
+                    <td>
+                        {{ teacher.first_name }} {{ teacher.last_name }}
+                        {% if not teacher.first_name and not teacher.last_name %}
+                            <em>No name provided</em>
+                        {% endif %}
+                    </td>
+                    <td>{{ teacher.email|default:"No email" }}</td>
+                    <td>{{ teacher.department|default:"Not Assigned" }}</td>
+                    <td>
+                        <a href="{% url 'edit_teacher' teacher.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'delete_teacher' teacher.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                        <small class="text-muted d-block">ID: {{ teacher.pk }}</small>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4">No teachers found. <a href="{% url 'add_teacher' %}" class="btn btn-sm btn-primary">Add Teacher</a></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

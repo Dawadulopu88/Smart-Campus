@@ -1,0 +1,387 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ title }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Exam List</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2">
+                        <i class="fas fa-download"></i> Export Results
+                    </a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addExamModal">
+                        <i class="fas fa-plus"></i> Schedule Exam
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Statistics Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-primary-light rounded mr-3">
+                                <i class="fas fa-clipboard-check text-primary"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Total Exams</div>
+                                <h4 class="mb-0 text-primary">24</h4>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-up"></i> 3 this month
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-success-light rounded mr-3">
+                                <i class="fas fa-check-circle text-success"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Completed</div>
+                                <h4 class="mb-0 text-success">18</h4>
+                                <small class="text-success">
+                                    Results published
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-warning-light rounded mr-3">
+                                <i class="fas fa-hourglass-half text-warning"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Ongoing</div>
+                                <h4 class="mb-0 text-warning">3</h4>
+                                <small class="text-warning">
+                                    In progress
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-info-light rounded mr-3">
+                                <i class="fas fa-calendar-alt text-info"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Upcoming</div>
+                                <h4 class="mb-0 text-info">3</h4>
+                                <small class="text-info">
+                                    Next week
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Schedule Table -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-calendar-check"></i> Exam Schedule - October 2025
+                        </h5>
+                        <div class="card-header-toolbar">
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-outline-secondary btn-sm active">All</button>
+                                <button class="btn btn-outline-secondary btn-sm">Midterm</button>
+                                <button class="btn btn-outline-secondary btn-sm">Final</button>
+                                <button class="btn btn-outline-secondary btn-sm">Quiz</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Date & Time</th>
+                                        <th>Subject</th>
+                                        <th>Class</th>
+                                        <th>Type</th>
+                                        <th>Duration</th>
+                                        <th>Room</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="exam-datetime">
+                                                <strong>Oct 05, 2025</strong><br>
+                                                <small class="text-muted">9:00 AM - 12:00 PM</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-calculator text-primary mr-2"></i>
+                                                Mathematics
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-primary">Class X</span></td>
+                                        <td><span class="badge badge-info">Midterm</span></td>
+                                        <td>3 Hours</td>
+                                        <td>Room 101</td>
+                                        <td><span class="badge badge-warning">Upcoming</span></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="exam-datetime">
+                                                <strong>Oct 07, 2025</strong><br>
+                                                <small class="text-muted">10:00 AM - 1:00 PM</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-flask text-success mr-2"></i>
+                                                Chemistry
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-primary">Class X</span></td>
+                                        <td><span class="badge badge-info">Midterm</span></td>
+                                        <td>3 Hours</td>
+                                        <td>Lab 201</td>
+                                        <td><span class="badge badge-warning">Upcoming</span></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="exam-datetime">
+                                                <strong>Oct 10, 2025</strong><br>
+                                                <small class="text-muted">2:00 PM - 4:00 PM</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-book text-purple mr-2"></i>
+                                                English Literature
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-secondary">Class IX</span></td>
+                                        <td><span class="badge badge-warning">Quiz</span></td>
+                                        <td>2 Hours</td>
+                                        <td>Room 205</td>
+                                        <td><span class="badge badge-warning">Upcoming</span></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <td>
+                                            <div class="exam-datetime">
+                                                <strong>Sep 25, 2025</strong><br>
+                                                <small class="text-muted">9:00 AM - 12:00 PM</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-atom text-info mr-2"></i>
+                                                Physics
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-primary">Class X</span></td>
+                                        <td><span class="badge badge-danger">Final</span></td>
+                                        <td>3 Hours</td>
+                                        <td>Room 102</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Results">
+                                                    <i class="fas fa-chart-bar"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <td>
+                                            <div class="exam-datetime">
+                                                <strong>Sep 20, 2025</strong><br>
+                                                <small class="text-muted">1:00 PM - 3:00 PM</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-globe text-success mr-2"></i>
+                                                Geography
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-secondary">Class IX</span></td>
+                                        <td><span class="badge badge-info">Midterm</span></td>
+                                        <td>2 Hours</td>
+                                        <td>Room 301</td>
+                                        <td><span class="badge badge-success">Completed</span></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Results">
+                                                    <i class="fas fa-chart-bar"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <nav aria-label="Exam pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+.avatar-large {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.1); }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.1); }
+.bg-info-light { background-color: rgba(13, 202, 240, 0.1); }
+
+.exam-datetime strong {
+    color: #495057;
+    font-size: 14px;
+}
+
+.card-header-toolbar {
+    margin-left: auto;
+}
+
+.text-purple { color: #6f42c1 !important; }
+.badge.badge-purple { background-color: #6f42c1; }
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-group .btn {
+    margin-right: 2px;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+</style>
+
+<!-- JavaScript for interactive features -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter buttons functionality
+    document.querySelectorAll('.btn-group .btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Simple demo notification
+            const filterType = this.textContent;
+            console.log('Filtering by:', filterType);
+        });
+    });
+
+    // Demo functionality for action buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (!this.getAttribute('data-toggle') && !this.getAttribute('href')) {
+                e.preventDefault();
+                alert('This feature is coming soon! This is a demo page.');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

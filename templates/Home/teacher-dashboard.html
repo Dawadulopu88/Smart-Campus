@@ -1,0 +1,420 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+   
+
+         <div class="page-wrapper">
+            <div class="content container-fluid">
+               <div class="page-header">
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <h3 class="page-title">Welcome {{ welcome_user }}!</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item active">Dashboard</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               
+               <!-- Teacher Statistics Cards -->
+               <div class="row">
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-one w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-chalkboard"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>04/06</h3>
+                                 <h6>Total Classes</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-two w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-user-graduate"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>40/60</h3>
+                                 <h6>Total Students</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-three w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-book-open"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>30/50</h3>
+                                 <h6>Total Lessons</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-four w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-clock"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>15/20</h3>
+                                 <h6>Total Hours</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+               <!-- Teacher Dashboard Content -->
+               <div class="row">
+                  <!-- Upcoming Lessons Section -->
+                  <div class="col-md-8">
+                     <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                           <h5 class="card-title mb-0"><i class="fas fa-calendar-check"></i> Upcoming Lesson</h5>
+                           <a href="#" class="text-primary">View All Courses</a>
+                        </div>
+                        <div class="card-body">
+                           <!-- Lesson Item 1 -->
+                           <div class="lesson-item d-flex justify-content-between align-items-center py-3 border-bottom">
+                              <div class="lesson-info">
+                                 <h6 class="mb-1">Aug 4, Tuesday</h6>
+                                 <p class="text-muted mb-0">2:30pm - 3:30pm (60min)</p>
+                              </div>
+                              <div class="lesson-details">
+                                 <h6 class="mb-1">Lessons 20</h6>
+                                 <p class="text-muted mb-0">3.1 ipsum dolor</p>
+                              </div>
+                              <div class="lesson-actions">
+                                 <span class="badge badge-success mr-2">Confirmed</span>
+                                 <button class="btn btn-primary btn-sm">Schedule</button>
+                              </div>
+                           </div>
+                           
+                           <!-- Lesson Item 2 -->
+                           <div class="lesson-item d-flex justify-content-between align-items-center py-3 border-bottom">
+                              <div class="lesson-info">
+                                 <h6 class="mb-1">Aug 6, Wednesday</h6>
+                                 <p class="text-muted mb-0">2:00pm - 4:00pm (120min)</p>
+                              </div>
+                              <div class="lesson-details">
+                                 <h6 class="mb-1">Lessons 21</h6>
+                                 <p class="text-muted mb-0">3.2 ipsum dolor</p>
+                              </div>
+                              <div class="lesson-actions">
+                                 <span class="badge badge-success mr-2">Confirmed</span>
+                                 <button class="btn btn-primary btn-sm">Schedule</button>
+                              </div>
+                           </div>
+                           
+                           <!-- Lesson Item 3 -->
+                           <div class="lesson-item d-flex justify-content-between align-items-center py-3">
+                              <div class="lesson-info">
+                                 <h6 class="mb-1">Aug 8, Thursday</h6>
+                                 <p class="text-muted mb-0">10:00am - 12:00pm (120min)</p>
+                              </div>
+                              <div class="lesson-details">
+                                 <h6 class="mb-1">Lessons 22</h6>
+                                 <p class="text-muted mb-0">3.3 ipsum dolor</p>
+                              </div>
+                              <div class="lesson-actions">
+                                 <span class="badge badge-success mr-2">Confirmed</span>
+                                 <button class="btn btn-primary btn-sm">Schedule</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     <!-- Teaching History -->
+                     <div class="card mt-4">
+                        <div class="card-header">
+                           <h5 class="card-title mb-0"><i class="fas fa-history"></i> Teaching History</h5>
+                        </div>
+                        <div class="card-body">
+                           <!-- History Item 1 -->
+                           <div class="history-item d-flex align-items-center py-3 border-bottom">
+                              <div class="status-indicator bg-primary rounded-circle mr-3"></div>
+                              <div class="history-info flex-grow-1">
+                                 <h6 class="mb-1">Sep 05, 9 am - 10 am (60min)</h6>
+                                 <p class="text-muted mb-0">Lorem ipsum dolor</p>
+                                 <span class="badge badge-warning">In Progress</span>
+                              </div>
+                           </div>
+                           
+                           <!-- History Item 2 -->
+                           <div class="history-item d-flex align-items-center py-3 border-bottom">
+                              <div class="status-indicator bg-info rounded-circle mr-3"></div>
+                              <div class="history-info flex-grow-1">
+                                 <h6 class="mb-1">Sep 04, 2 pm - 3 pm (60min)</h6>
+                                 <p class="text-muted mb-0">Et dolore magna</p>
+                                 <span class="badge badge-success">Completed</span>
+                              </div>
+                           </div>
+                           
+                           <!-- History Item 3 -->
+                           <div class="history-item d-flex align-items-center py-3 border-bottom">
+                              <div class="status-indicator bg-danger rounded-circle mr-3"></div>
+                              <div class="history-info flex-grow-1">
+                                 <h6 class="mb-1">Aug 30, 10 am - 12 pm (120min)</h6>
+                                 <p class="text-muted mb-0">Exercitation ullamco</p>
+                                 <span class="badge badge-success">Completed</span>
+                              </div>
+                           </div>
+                           
+                           <!-- History Item 4 -->
+                           <div class="history-item d-flex align-items-center py-3">
+                              <div class="status-indicator bg-success rounded-circle mr-3"></div>
+                              <div class="history-info flex-grow-1">
+                                 <h6 class="mb-1">Aug 30, 10 am - 12 pm (120min)</h6>
+                                 <p class="text-muted mb-0">Occaecat cupidatat</p>
+                                 <span class="badge badge-success">Completed</span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <!-- Calendar & Events Section -->
+                  <div class="col-md-4">
+                     <!-- Calendar -->
+                     <div class="card">
+                        <div class="card-header">
+                           <h5 class="card-title mb-0"><i class="fas fa-calendar-alt"></i> Calendar</h5>
+                        </div>
+                        <div class="card-body">
+                           <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+                              <button class="btn btn-sm btn-outline-secondary">
+                                 <i class="fas fa-chevron-left"></i>
+                              </button>
+                              <h6 class="mb-0">September 2025</h6>
+                              <button class="btn btn-sm btn-outline-secondary">
+                                 <i class="fas fa-chevron-right"></i>
+                              </button>
+                           </div>
+                           
+                           <div class="calendar-grid">
+                              <div class="calendar-days">
+                                 <div class="day-header">Sun</div>
+                                 <div class="day-header">Mon</div>
+                                 <div class="day-header">Tue</div>
+                                 <div class="day-header">Wed</div>
+                                 <div class="day-header">Thu</div>
+                                 <div class="day-header">Fri</div>
+                                 <div class="day-header">Sat</div>
+                              </div>
+                              <div class="calendar-dates">
+                                 <div class="date-cell">31</div>
+                                 <div class="date-cell">1</div>
+                                 <div class="date-cell">2</div>
+                                 <div class="date-cell">3</div>
+                                 <div class="date-cell">4</div>
+                                 <div class="date-cell">5</div>
+                                 <div class="date-cell">6</div>
+                                 <div class="date-cell">7</div>
+                                 <div class="date-cell">8</div>
+                                 <div class="date-cell">9</div>
+                                 <div class="date-cell">10</div>
+                                 <div class="date-cell">11</div>
+                                 <div class="date-cell">12</div>
+                                 <div class="date-cell">13</div>
+                                 <div class="date-cell">14</div>
+                                 <div class="date-cell">15</div>
+                                 <div class="date-cell">16</div>
+                                 <div class="date-cell">17</div>
+                                 <div class="date-cell">18</div>
+                                 <div class="date-cell">19</div>
+                                 <div class="date-cell">20</div>
+                                 <div class="date-cell">21</div>
+                                 <div class="date-cell">22</div>
+                                 <div class="date-cell">23</div>
+                                 <div class="date-cell">24</div>
+                                 <div class="date-cell today">25</div>
+                                 <div class="date-cell">26</div>
+                                 <div class="date-cell">27</div>
+                                 <div class="date-cell">28</div>
+                                 <div class="date-cell">29</div>
+                                 <div class="date-cell">30</div>
+                                 <div class="date-cell">1</div>
+                                 <div class="date-cell">2</div>
+                                 <div class="date-cell">3</div>
+                                 <div class="date-cell">4</div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     <!-- Events Today -->
+                     <div class="card mt-4">
+                        <div class="card-header">
+                           <h5 class="card-title mb-0"><i class="fas fa-calendar-day"></i> Events Today (Sep 25, 2025)</h5>
+                        </div>
+                        <div class="card-body">
+                           <div class="event-list">
+                              <div class="event-item d-flex align-items-center mb-3">
+                                 <div class="event-dot bg-primary mr-2"></div>
+                                 <div class="event-info flex-grow-1">
+                                    <h6 class="mb-1">vermantium</h6>
+                                    <small class="text-muted">09pm - 10pm</small>
+                                 </div>
+                              </div>
+                              
+                              <div class="event-item d-flex align-items-center mb-3">
+                                 <div class="event-dot bg-warning mr-2"></div>
+                                 <div class="event-info flex-grow-1">
+                                    <h6 class="mb-1">prahat</h6>
+                                    <small class="text-muted">09pm - 10pm</small>
+                                 </div>
+                              </div>
+                              
+                              <div class="event-item d-flex align-items-center">
+                                 <div class="event-dot bg-success mr-2"></div>
+                                 <div class="event-info flex-grow-1">
+                                    <h6 class="mb-1">breana</h6>
+                                    <small class="text-muted">8pm - 9:30pm</small>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <footer>
+               <p>Copyright © 2025 Smart Campus.</p>
+            </footer>
+         </div>
+      </div>
+      
+      <style>
+      .lesson-item {
+         transition: background-color 0.2s;
+      }
+      
+      .lesson-item:hover {
+         background-color: #f8f9fa;
+      }
+      
+      .lesson-info h6 {
+         color: #333;
+         font-weight: 600;
+      }
+      
+      .lesson-details h6 {
+         color: #333;
+         font-weight: 600;
+      }
+      
+      .status-indicator {
+         width: 12px;
+         height: 12px;
+      }
+      
+      .history-item {
+         transition: background-color 0.2s;
+      }
+      
+      .history-item:hover {
+         background-color: #f8f9fa;
+      }
+      
+      .calendar-grid {
+         font-size: 14px;
+      }
+      
+      .calendar-days {
+         display: grid;
+         grid-template-columns: repeat(7, 1fr);
+         gap: 5px;
+         margin-bottom: 10px;
+      }
+      
+      .day-header {
+         text-align: center;
+         font-weight: bold;
+         color: #6c757d;
+         padding: 5px;
+      }
+      
+      .calendar-dates {
+         display: grid;
+         grid-template-columns: repeat(7, 1fr);
+         gap: 5px;
+      }
+      
+      .date-cell {
+         text-align: center;
+         padding: 8px 4px;
+         cursor: pointer;
+         border-radius: 4px;
+         transition: background-color 0.2s;
+      }
+      
+      .date-cell:hover {
+         background-color: #e9ecef;
+      }
+      
+      .date-cell.today {
+         background-color: #dc3545;
+         color: white;
+         font-weight: bold;
+      }
+      
+      .event-dot {
+         width: 8px;
+         height: 8px;
+         border-radius: 50%;
+      }
+      
+      .event-item h6 {
+         color: #333;
+         font-weight: 500;
+      }
+      
+      .badge {
+         font-size: 0.75rem;
+      }
+      
+      /* Teacher-specific card colors */
+      .bg-one { background: linear-gradient(135deg, #ff9a8b 0%, #f7797d 100%); }
+      .bg-two { background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%); }
+      .bg-three { background: linear-gradient(135deg, #ffd93d 0%, #ff9f43 100%); }
+      .bg-four { background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); }
+      
+      .bg-one .db-info h3, .bg-one .db-info h6,
+      .bg-two .db-info h3, .bg-two .db-info h6,
+      .bg-three .db-info h3, .bg-three .db-info h6,
+      .bg-four .db-info h3, .bg-four .db-info h6 {
+         color: white;
+      }
+      
+      .bg-one .db-icon i, .bg-two .db-icon i, .bg-three .db-icon i, .bg-four .db-icon i {
+         color: white;
+         font-size: 2rem;
+      }
+      </style>
+      
+      <script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+      <script src="{%static 'assets/js/popper.min.js' %}"></script>
+      <script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+      <script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+      <script src="{%static 'assets/js/script.js' %}"></script>
+   </body>
+   
+</html>
+
+{% endblock %}

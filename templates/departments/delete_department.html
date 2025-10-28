@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+<title>SmartCampus - {{ title }}</title>
+<link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+<link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">{{ title }}</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'department_list' %}">Departments</a></li>
+                            <li class="breadcrumb-item active">Delete Department</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success/Error Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white">
+                            <h4 class="card-title mb-0">
+                                <i class="fas fa-exclamation-triangle"></i> {{ title }}
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-warning">
+                                <i class="fas fa-warning"></i>
+                                <strong>Warning!</strong> This action cannot be undone. Are you sure you want to delete this department?
+                            </div>
+
+                            <!-- Department Details -->
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <h5>Department Details:</h5>
+                                    <div class="border rounded p-3 bg-light">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>Name:</strong> {{ department.name }}</p>
+                                                <p><strong>ID:</strong> {{ department.pk }}</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>Description:</strong> 
+                                                    {% if department.description %}
+                                                        {{ department.description }}
+                                                    {% else %}
+                                                        <em class="text-muted">No description</em>
+                                                    {% endif %}
+                                                </p>
+                                                <p><strong>Associated Subjects:</strong> 
+                                                    <span class="badge badge-info">{{ subject_count }}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Warning about subjects -->
+                            {% if subject_count > 0 %}
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <strong>Important:</strong> This department has {{ subject_count }} associated subject{{ subject_count|pluralize }}. 
+                                Deleting this department may affect the subjects. Please ensure you handle the subjects appropriately before deletion.
+                            </div>
+                            {% endif %}
+
+                            <!-- Confirmation Form -->
+                            <form method="post" id="deleteForm">
+                                {% csrf_token %}
+                                
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="confirmDelete" required>
+                                        <label class="form-check-label" for="confirmDelete">
+                                            <strong>I understand that this action cannot be undone and I want to delete "{{ department.name }}" department.</strong>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-right">
+                                    <a href="{% url 'department_list' %}" class="btn btn-secondary mr-2">
+                                        <i class="fas fa-arrow-left"></i> Go Back
+                                    </a>
+                                    <button type="submit" class="btn btn-danger" id="deleteButton" disabled>
+                                        <i class="fas fa-trash-alt"></i> Delete Department
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+    // Enable/disable delete button based on checkbox
+    $('#confirmDelete').change(function() {
+        $('#deleteButton').prop('disabled', !this.checked);
+    });
+    
+    // Show confirmation dialog before submitting
+    $('#deleteForm').on('submit', function(e) {
+        if (!confirm('Are you absolutely sure you want to delete the department "{{ department.name }}"? This action cannot be undone.')) {
+            e.preventDefault();
+        }
+    });
+    
+    // Add visual feedback for dangerous action
+    $('#deleteButton').hover(
+        function() {
+            $(this).removeClass('btn-danger').addClass('btn-dark');
+        },
+        function() {
+            $(this).removeClass('btn-dark').addClass('btn-danger');
+        }
+    );
+});
+</script>
+
+</body>
+</html>

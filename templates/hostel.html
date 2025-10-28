@@ -1,0 +1,830 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ title }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Hostel Management</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2">
+                        <i class="fas fa-download"></i> Export Report
+                    </a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addRoomModal">
+                        <i class="fas fa-plus"></i> Add Room
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hostel Statistics Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-primary-light rounded mr-3">
+                                <i class="fas fa-bed text-primary"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Total Rooms</div>
+                                <h4 class="mb-0 text-primary">120</h4>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-up"></i> 5 floors
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-success-light rounded mr-3">
+                                <i class="fas fa-users text-success"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Occupied</div>
+                                <h4 class="mb-0 text-success">95</h4>
+                                <small class="text-success">
+                                    79% occupancy rate
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-warning-light rounded mr-3">
+                                <i class="fas fa-door-open text-warning"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Available</div>
+                                <h4 class="mb-0 text-warning">25</h4>
+                                <small class="text-info">
+                                    Ready for booking
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-info-light rounded mr-3">
+                                <i class="fas fa-tools text-info"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Maintenance</div>
+                                <h4 class="mb-0 text-info">3</h4>
+                                <small class="text-info">
+                                    Under repair
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Row -->
+        <div class="row">
+            <!-- Room Management -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-building"></i> Room Management
+                        </h5>
+                        <div class="card-header-toolbar">
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-outline-secondary btn-sm active">All Rooms</button>
+                                <button class="btn btn-outline-secondary btn-sm">Occupied</button>
+                                <button class="btn btn-outline-secondary btn-sm">Available</button>
+                                <button class="btn btn-outline-secondary btn-sm">Maintenance</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Floor Selection -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <select class="form-control" id="floorSelect">
+                                    <option value="all">All Floors</option>
+                                    <option value="1">1st Floor</option>
+                                    <option value="2">2nd Floor</option>
+                                    <option value="3" selected>3rd Floor</option>
+                                    <option value="4">4th Floor</option>
+                                    <option value="5">5th Floor</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control" id="roomTypeSelect">
+                                    <option value="all">All Room Types</option>
+                                    <option value="single">Single Bed</option>
+                                    <option value="double" selected>Double Bed</option>
+                                    <option value="triple">Triple Bed</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search room number...">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Room Grid -->
+                        <div class="room-grid">
+                            <div class="row">
+                                <!-- Room 301 -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="room-card occupied">
+                                        <div class="room-header">
+                                            <div class="room-number">301</div>
+                                            <div class="room-status">
+                                                <span class="badge badge-success">Occupied</span>
+                                            </div>
+                                        </div>
+                                        <div class="room-body">
+                                            <div class="room-type">
+                                                <i class="fas fa-bed"></i> Double Bed
+                                            </div>
+                                            <div class="room-occupants">
+                                                <div class="occupant">
+                                                    <i class="fas fa-user"></i> Ahmad Rahman
+                                                    <small>Class X</small>
+                                                </div>
+                                                <div class="occupant">
+                                                    <i class="fas fa-user"></i> Karim Ahmed
+                                                    <small>Class X</small>
+                                                </div>
+                                            </div>
+                                            <div class="room-actions">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" title="Maintenance">
+                                                    <i class="fas fa-tools"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Room 302 -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="room-card available">
+                                        <div class="room-header">
+                                            <div class="room-number">302</div>
+                                            <div class="room-status">
+                                                <span class="badge badge-warning">Available</span>
+                                            </div>
+                                        </div>
+                                        <div class="room-body">
+                                            <div class="room-type">
+                                                <i class="fas fa-bed"></i> Double Bed
+                                            </div>
+                                            <div class="room-features">
+                                                <div class="feature"><i class="fas fa-wifi"></i> WiFi</div>
+                                                <div class="feature"><i class="fas fa-fan"></i> AC</div>
+                                                <div class="feature"><i class="fas fa-bath"></i> Attached Bath</div>
+                                            </div>
+                                            <div class="room-actions">
+                                                <button class="btn btn-sm btn-success" title="Assign Room">
+                                                    <i class="fas fa-plus"></i> Assign
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" title="Maintenance">
+                                                    <i class="fas fa-tools"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Room 303 -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="room-card occupied">
+                                        <div class="room-header">
+                                            <div class="room-number">303</div>
+                                            <div class="room-status">
+                                                <span class="badge badge-success">Occupied</span>
+                                            </div>
+                                        </div>
+                                        <div class="room-body">
+                                            <div class="room-type">
+                                                <i class="fas fa-bed"></i> Triple Bed
+                                            </div>
+                                            <div class="room-occupants">
+                                                <div class="occupant">
+                                                    <i class="fas fa-user"></i> Nasir Khan
+                                                    <small>Class IX</small>
+                                                </div>
+                                                <div class="occupant">
+                                                    <i class="fas fa-user"></i> Rafiq Ahmed
+                                                    <small>Class IX</small>
+                                                </div>
+                                                <div class="occupant">
+                                                    <i class="fas fa-user"></i> Shakib Rahman
+                                                    <small>Class IX</small>
+                                                </div>
+                                            </div>
+                                            <div class="room-actions">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" title="Maintenance">
+                                                    <i class="fas fa-tools"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Room 304 -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="room-card maintenance">
+                                        <div class="room-header">
+                                            <div class="room-number">304</div>
+                                            <div class="room-status">
+                                                <span class="badge badge-danger">Maintenance</span>
+                                            </div>
+                                        </div>
+                                        <div class="room-body">
+                                            <div class="room-type">
+                                                <i class="fas fa-bed"></i> Double Bed
+                                            </div>
+                                            <div class="maintenance-info">
+                                                <div class="maintenance-issue">
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                    AC Repair Required
+                                                </div>
+                                                <div class="maintenance-date">
+                                                    <small>Started: Sep 28, 2025</small>
+                                                </div>
+                                            </div>
+                                            <div class="room-actions">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success" title="Mark Fixed">
+                                                    <i class="fas fa-check"></i> Fixed
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Room 305 -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="room-card available">
+                                        <div class="room-header">
+                                            <div class="room-number">305</div>
+                                            <div class="room-status">
+                                                <span class="badge badge-warning">Available</span>
+                                            </div>
+                                        </div>
+                                        <div class="room-body">
+                                            <div class="room-type">
+                                                <i class="fas fa-bed"></i> Single Bed
+                                            </div>
+                                            <div class="room-features">
+                                                <div class="feature"><i class="fas fa-wifi"></i> WiFi</div>
+                                                <div class="feature"><i class="fas fa-fan"></i> Fan</div>
+                                                <div class="feature"><i class="fas fa-bath"></i> Shared Bath</div>
+                                            </div>
+                                            <div class="room-actions">
+                                                <button class="btn btn-sm btn-success" title="Assign Room">
+                                                    <i class="fas fa-plus"></i> Assign
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" title="Maintenance">
+                                                    <i class="fas fa-tools"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Room 306 -->
+                                <div class="col-md-4 mb-3">
+                                    <div class="room-card occupied">
+                                        <div class="room-header">
+                                            <div class="room-number">306</div>
+                                            <div class="room-status">
+                                                <span class="badge badge-success">Occupied</span>
+                                            </div>
+                                        </div>
+                                        <div class="room-body">
+                                            <div class="room-type">
+                                                <i class="fas fa-bed"></i> Double Bed
+                                            </div>
+                                            <div class="room-occupants">
+                                                <div class="occupant">
+                                                    <i class="fas fa-user"></i> Tariq Hassan
+                                                    <small>Class VIII</small>
+                                                </div>
+                                                <div class="occupant">
+                                                    <i class="fas fa-user"></i> Fahim Rahman
+                                                    <small>Class VIII</small>
+                                                </div>
+                                            </div>
+                                            <div class="room-actions">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" title="Maintenance">
+                                                    <i class="fas fa-tools"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-md-4">
+                <!-- Recent Activities -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-history"></i> Recent Activities
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline">
+                            <div class="activity-item">
+                                <div class="activity-icon bg-success">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>New Check-in</h6>
+                                    <p class="text-muted small mb-1">Mahmud Khan - Room 205</p>
+                                    <span class="text-success">Class IX</span>
+                                    <span class="text-muted small float-right">3 hours ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-warning">
+                                    <i class="fas fa-user-minus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Check-out</h6>
+                                    <p class="text-muted small mb-1">Rashid Ahmed - Room 102</p>
+                                    <span class="text-warning">Vacation</span>
+                                    <span class="text-muted small float-right">1 day ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-info">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Maintenance Completed</h6>
+                                    <p class="text-muted small mb-1">Room 201 - AC Fixed</p>
+                                    <span class="text-info">Ready for occupancy</span>
+                                    <span class="text-muted small float-right">2 days ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-primary">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Room Assignment</h6>
+                                    <p class="text-muted small mb-1">Room 305 assigned</p>
+                                    <span class="text-primary">Salam Khan - Class VII</span>
+                                    <span class="text-muted small float-right">3 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-bolt"></i> Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-block mb-2">
+                                <i class="fas fa-user-plus mr-2"></i>
+                                Check-in Student
+                            </button>
+                            
+                            <button class="btn btn-warning btn-block mb-2">
+                                <i class="fas fa-user-minus mr-2"></i>
+                                Check-out Student
+                            </button>
+                            
+                            <button class="btn btn-info btn-block mb-2">
+                                <i class="fas fa-tools mr-2"></i>
+                                Report Maintenance
+                            </button>
+                            
+                            <button class="btn btn-success btn-block mb-2">
+                                <i class="fas fa-bed mr-2"></i>
+                                Assign Room
+                            </button>
+                            
+                            <button class="btn btn-secondary btn-block mb-2">
+                                <i class="fas fa-chart-bar mr-2"></i>
+                                Hostel Reports
+                            </button>
+                        </div>
+                        
+                        <!-- Monthly Summary -->
+                        <div class="alert alert-light mt-3">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-calendar"></i> This Month
+                            </h6>
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <strong>12</strong><br>
+                                    <small>Check-ins</small>
+                                </div>
+                                <div class="col-6">
+                                    <strong>8</strong><br>
+                                    <small>Check-outs</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floor Overview -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-building"></i> Floor Overview
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="floor-overview">
+                            <div class="floor-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="floor-name">5th Floor</span>
+                                    <span class="occupancy-rate">85%</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 6px;">
+                                    <div class="progress-bar bg-success" style="width: 85%"></div>
+                                </div>
+                                <small class="text-muted">20/24 rooms occupied</small>
+                            </div>
+                            
+                            <div class="floor-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="floor-name">4th Floor</span>
+                                    <span class="occupancy-rate">75%</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 6px;">
+                                    <div class="progress-bar bg-info" style="width: 75%"></div>
+                                </div>
+                                <small class="text-muted">18/24 rooms occupied</small>
+                            </div>
+                            
+                            <div class="floor-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="floor-name">3rd Floor</span>
+                                    <span class="occupancy-rate">79%</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" style="width: 79%"></div>
+                                </div>
+                                <small class="text-muted">19/24 rooms occupied</small>
+                            </div>
+                            
+                            <div class="floor-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="floor-name">2nd Floor</span>
+                                    <span class="occupancy-rate">83%</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 6px;">
+                                    <div class="progress-bar bg-warning" style="width: 83%"></div>
+                                </div>
+                                <small class="text-muted">20/24 rooms occupied</small>
+                            </div>
+                            
+                            <div class="floor-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="floor-name">1st Floor</span>
+                                    <span class="occupancy-rate">71%</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 6px;">
+                                    <div class="progress-bar bg-secondary" style="width: 71%"></div>
+                                </div>
+                                <small class="text-muted">17/24 rooms occupied</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+.avatar-large {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.1); }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.1); }
+.bg-info-light { background-color: rgba(13, 202, 240, 0.1); }
+
+.room-card {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+}
+
+.room-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.room-card.occupied {
+    border-color: #28a745;
+    background: linear-gradient(135deg, #ffffff, #f8fff9);
+}
+
+.room-card.available {
+    border-color: #ffc107;
+    background: linear-gradient(135deg, #ffffff, #fffdf8);
+}
+
+.room-card.maintenance {
+    border-color: #dc3545;
+    background: linear-gradient(135deg, #ffffff, #fff8f8);
+}
+
+.room-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.room-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #495057;
+}
+
+.room-status {
+    margin-left: auto;
+}
+
+.room-body {
+    padding: 15px;
+}
+
+.room-type {
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.room-occupants {
+    margin-bottom: 15px;
+}
+
+.occupant {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #495057;
+}
+
+.occupant small {
+    color: #6c757d;
+    margin-left: auto;
+}
+
+.room-features {
+    margin-bottom: 15px;
+}
+
+.feature {
+    display: inline-block;
+    background: #f8f9fa;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin: 2px;
+    font-size: 11px;
+    color: #6c757d;
+}
+
+.maintenance-info {
+    margin-bottom: 15px;
+}
+
+.maintenance-issue {
+    color: #dc3545;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.maintenance-date {
+    color: #6c757d;
+}
+
+.room-actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.activity-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.activity-item {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.activity-item:not(:last-child):before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 30px;
+    height: calc(100% - 10px);
+    width: 2px;
+    background: #e9ecef;
+}
+
+.activity-icon {
+    position: absolute;
+    left: -23px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+}
+
+.floor-item {
+    margin-bottom: 15px;
+}
+
+.floor-name {
+    font-weight: 600;
+    color: #495057;
+}
+
+.occupancy-rate {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.card-header-toolbar {
+    margin-left: auto;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.d-grid {
+    display: grid;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+</style>
+
+<!-- JavaScript for interactive features -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter buttons functionality
+    document.querySelectorAll('.btn-group .btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const filterType = this.textContent;
+            console.log('Filtering by:', filterType);
+        });
+    });
+
+    // Floor and room type selection
+    document.getElementById('floorSelect').addEventListener('change', function() {
+        const selectedFloor = this.value;
+        console.log('Floor selected:', selectedFloor);
+    });
+
+    document.getElementById('roomTypeSelect').addEventListener('change', function() {
+        const selectedType = this.value;
+        console.log('Room type selected:', selectedType);
+    });
+
+    // Search functionality
+    document.querySelector('.input-group .btn').addEventListener('click', function() {
+        const searchTerm = document.querySelector('.input-group input').value;
+        if (searchTerm.trim()) {
+            console.log('Searching for room:', searchTerm);
+            alert(`Searching for room: "${searchTerm}"\nThis is a demo feature.`);
+        }
+    });
+
+    // Demo functionality for buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (!this.getAttribute('data-toggle') && !this.getAttribute('href') && 
+                !this.closest('.input-group') && !this.closest('.btn-group') &&
+                !this.closest('#floorSelect') && !this.closest('#roomTypeSelect')) {
+                e.preventDefault();
+                alert('This feature is coming soon! This is a demo page.');
+            }
+        });
+    });
+
+    // Room card click functionality
+    document.querySelectorAll('.room-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if (!e.target.closest('.room-actions')) {
+                const roomNumber = this.querySelector('.room-number').textContent;
+                console.log('Room selected:', roomNumber);
+            }
+        });
+    });
+
+    // Animate progress bars
+    setTimeout(() => {
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            bar.style.transition = 'width 1s ease-in-out';
+        });
+    }, 100);
+});
+</script>
+{% endblock %}

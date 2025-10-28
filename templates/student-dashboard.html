@@ -1,0 +1,410 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+   
+
+         <div class="page-wrapper">
+            <div class="content container-fluid">
+               <div class="page-header">
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <h3 class="page-title">Welcome {{ welcome_user }}!</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item active">Dashboard</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-one w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-user-graduate"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>50055</h3>
+                                 <h6>Students</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-two w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-crown"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>50+</h3>
+                                 <h6>Awards</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-three w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-building"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>30+</h3>
+                                 <h6>Department</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                     <div class="card bg-four w-100">
+                        <div class="card-body">
+                           <div class="db-widgets d-flex justify-content-between align-items-center">
+                              <div class="db-icon">
+                                 <i class="fas fa-file-invoice-dollar"></i>
+                              </div>
+                              <div class="db-info">
+                                 <h3>$505</h3>
+                                 <h6>Revenue</h6>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+               <!-- Student Learning Dashboard -->
+               <div class="row">
+                  <!-- Today's Lessons Section -->
+                  <div class="col-md-8">
+                     <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                           <h5 class="card-title mb-0"><i class="fas fa-book-open"></i> Today's Lessons</h5>
+                           <a href="#" class="text-primary">View All Courses</a>
+                        </div>
+                        <div class="card-body">
+                           <div class="row">
+                              <!-- Lesson Card 1 -->
+                              <div class="col-md-6 mb-3">
+                                 <div class="lesson-card border rounded p-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                       <h6 class="mb-0">Mathematics</h6>
+                                       <div class="progress-circle" data-percentage="75">
+                                          <div class="progress-circle-fill"></div>
+                                          <span class="progress-text">75%</span>
+                                       </div>
+                                    </div>
+                                    <p class="text-muted small mb-2">9:00 AM - 10:00 AM | 5 lessons | 60 Minutes</p>
+                                    <p class="small mb-3">Lesson Learned: **15 / 20**</p>
+                                    <div class="d-flex gap-2">
+                                       <button class="btn btn-outline-secondary btn-sm">Skip</button>
+                                       <button class="btn btn-primary btn-sm">Continue</button>
+                                    </div>
+                                 </div>
+                              </div>
+                              
+                              <!-- Lesson Card 2 -->
+                              <div class="col-md-6 mb-3">
+                                 <div class="lesson-card border rounded p-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                       <h6 class="mb-0">Science</h6>
+                                       <div class="progress-circle" data-percentage="50">
+                                          <div class="progress-circle-fill"></div>
+                                          <span class="progress-text">50%</span>
+                                       </div>
+                                    </div>
+                                    <p class="text-muted small mb-2">10:30 AM - 11:30 AM | 4 lessons | 50 Minutes</p>
+                                    <p class="small mb-3">Lesson Learned: **10 / 20**</p>
+                                    <div class="d-flex gap-2">
+                                       <button class="btn btn-outline-secondary btn-sm">Skip</button>
+                                       <button class="btn btn-success btn-sm">Continue</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     <!-- Recent Activity History -->
+                     <div class="card mt-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                           <h5 class="card-title mb-0"><i class="fas fa-history"></i> Recent Activity History</h5>
+                           <select class="form-control form-control-sm" style="width: auto;">
+                              <option>Weekly</option>
+                              <option>Monthly</option>
+                              <option>Daily</option>
+                           </select>
+                        </div>
+                        <div class="card-body">
+                           <div class="activity-list">
+                              <div class="activity-item d-flex justify-content-between align-items-center py-2 border-bottom">
+                                 <div>
+                                    <h6 class="mb-1">Physics Assignment 4</h6>
+                                    <small class="text-muted">Submitted Sep 25, 9:30 am</small>
+                                 </div>
+                                 <span class="badge badge-success">Graded A+</span>
+                              </div>
+                              
+                              <div class="activity-item d-flex justify-content-between align-items-center py-2 border-bottom">
+                                 <div>
+                                    <h6 class="mb-1">History Mid-Term Test</h6>
+                                    <small class="text-muted">Scheduled for Sep 27, 2:00 pm</small>
+                                 </div>
+                                 <span class="badge badge-warning">Upcoming</span>
+                              </div>
+                              
+                              <div class="activity-item d-flex justify-content-between align-items-center py-2 border-bottom">
+                                 <div>
+                                    <h6 class="mb-1">Chemistry Lab Report 2</h6>
+                                    <small class="text-muted">Due Sep 30, 11:59 pm</small>
+                                 </div>
+                                 <span class="badge badge-danger">Pending</span>
+                              </div>
+                              
+                              <div class="activity-item d-flex justify-content-between align-items-center py-2">
+                                 <div>
+                                    <h6 class="mb-1">English Essay Draft</h6>
+                                    <small class="text-muted">Completed Aug 30, 5:00 pm</small>
+                                 </div>
+                                 <span class="badge badge-success">Completed</span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <!-- Academic Calendar & Schedule -->
+                  <div class="col-md-4">
+                     <!-- Academic Calendar -->
+                     <div class="card">
+                        <div class="card-header">
+                           <h5 class="card-title mb-0"><i class="fas fa-calendar-alt"></i> Academic Calendar</h5>
+                        </div>
+                        <div class="card-body">
+                           <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+                              <button class="btn btn-sm btn-outline-secondary">
+                                 <i class="fas fa-chevron-left"></i>
+                              </button>
+                              <h6 class="mb-0">October 2025</h6>
+                              <button class="btn btn-sm btn-outline-secondary">
+                                 <i class="fas fa-chevron-right"></i>
+                              </button>
+                           </div>
+                           
+                           <div class="calendar-grid">
+                              <div class="calendar-days">
+                                 <div class="day-header">Sun</div>
+                                 <div class="day-header">Mon</div>
+                                 <div class="day-header">Tue</div>
+                                 <div class="day-header">Wed</div>
+                                 <div class="day-header">Thu</div>
+                                 <div class="day-header">Fri</div>
+                                 <div class="day-header">Sat</div>
+                              </div>
+                              <div class="calendar-dates">
+                                 <div class="date-cell"></div>
+                                 <div class="date-cell"></div>
+                                 <div class="date-cell">1</div>
+                                 <div class="date-cell">2</div>
+                                 <div class="date-cell">3</div>
+                                 <div class="date-cell">4</div>
+                                 <div class="date-cell">5</div>
+                                 <div class="date-cell today">6</div>
+                                 <div class="date-cell">7</div>
+                                 <div class="date-cell">8</div>
+                                 <div class="date-cell">9</div>
+                                 <div class="date-cell">10</div>
+                                 <div class="date-cell">11</div>
+                                 <div class="date-cell">12</div>
+                                 <div class="date-cell">13</div>
+                                 <div class="date-cell event">14</div>
+                                 <div class="date-cell">15</div>
+                                 <div class="date-cell">16</div>
+                                 <div class="date-cell">17</div>
+                                 <div class="date-cell">18</div>
+                                 <div class="date-cell">19</div>
+                                 <div class="date-cell">20</div>
+                                 <div class="date-cell">21</div>
+                                 <div class="date-cell">22</div>
+                                 <div class="date-cell">23</div>
+                                 <div class="date-cell">24</div>
+                                 <div class="date-cell highlighted">25</div>
+                                 <div class="date-cell">26</div>
+                                 <div class="date-cell event">27</div>
+                                 <div class="date-cell">28</div>
+                                 <div class="date-cell">29</div>
+                                 <div class="date-cell">30</div>
+                                 <div class="date-cell">31</div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     <!-- Today's Schedule -->
+                     <div class="card mt-4">
+                        <div class="card-header">
+                           <h5 class="card-title mb-0"><i class="fas fa-clock"></i> Today's Schedule (Oct 6)</h5>
+                        </div>
+                        <div class="card-body">
+                           <div class="schedule-list">
+                              <div class="schedule-item d-flex align-items-center mb-3">
+                                 <div class="time-badge bg-primary text-white">09:00</div>
+                                 <div class="ml-3">
+                                    <h6 class="mb-1">Math Class (A101)</h6>
+                                    <small class="text-muted">09:00 - 10:00 AM</small>
+                                 </div>
+                              </div>
+                              
+                              <div class="schedule-item d-flex align-items-center mb-3">
+                                 <div class="time-badge bg-danger text-white">11:00</div>
+                                 <div class="ml-3">
+                                    <h6 class="mb-1">History Exam (B205)</h6>
+                                    <small class="text-muted">11:00 - 12:00 PM</small>
+                                 </div>
+                              </div>
+                              
+                              <div class="schedule-item d-flex align-items-center">
+                                 <div class="time-badge bg-info text-white">02:30</div>
+                                 <div class="ml-3">
+                                    <h6 class="mb-1">Study Hall</h6>
+                                    <small class="text-muted">02:30 - 03:30 PM</small>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <footer>
+               <p>Copyright © 2025 Smart Campus.</p>
+            </footer>
+         </div>
+      </div>
+      
+      <style>
+      .lesson-card {
+         transition: transform 0.2s, box-shadow 0.2s;
+      }
+      
+      .lesson-card:hover {
+         transform: translateY(-2px);
+         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      
+      .progress-circle {
+         position: relative;
+         width: 50px;
+         height: 50px;
+         border-radius: 50%;
+         background: #f8f9fa;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         border: 3px solid #e9ecef;
+      }
+      
+      .progress-circle[data-percentage="75"] {
+         border-color: #007bff;
+         background: linear-gradient(45deg, #007bff 75%, #e9ecef 75%);
+      }
+      
+      .progress-circle[data-percentage="50"] {
+         border-color: #28a745;
+         background: linear-gradient(45deg, #28a745 50%, #e9ecef 50%);
+      }
+      
+      .progress-text {
+         position: absolute;
+         font-size: 12px;
+         font-weight: bold;
+         color: #333;
+      }
+      
+      .calendar-grid {
+         font-size: 14px;
+      }
+      
+      .calendar-days {
+         display: grid;
+         grid-template-columns: repeat(7, 1fr);
+         gap: 5px;
+         margin-bottom: 10px;
+      }
+      
+      .day-header {
+         text-align: center;
+         font-weight: bold;
+         color: #6c757d;
+         padding: 5px;
+      }
+      
+      .calendar-dates {
+         display: grid;
+         grid-template-columns: repeat(7, 1fr);
+         gap: 5px;
+      }
+      
+      .date-cell {
+         text-align: center;
+         padding: 8px 4px;
+         cursor: pointer;
+         border-radius: 4px;
+         transition: background-color 0.2s;
+      }
+      
+      .date-cell:hover {
+         background-color: #e9ecef;
+      }
+      
+      .date-cell.today {
+         background-color: #007bff;
+         color: white;
+         font-weight: bold;
+      }
+      
+      .date-cell.event {
+         background-color: #ffc107;
+         color: #212529;
+         font-weight: bold;
+      }
+      
+      .date-cell.highlighted {
+         background-color: #28a745;
+         color: white;
+         font-weight: bold;
+      }
+      
+      .time-badge {
+         min-width: 50px;
+         padding: 4px 8px;
+         border-radius: 12px;
+         font-size: 12px;
+         font-weight: bold;
+         text-align: center;
+      }
+      
+      .activity-item:last-child {
+         border-bottom: none !important;
+      }
+      
+      .gap-2 {
+         gap: 0.5rem;
+      }
+      </style>
+      
+      <script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+      <script src="{%static 'assets/js/popper.min.js' %}"></script>
+      <script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+      <script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+      <script src="{%static 'assets/js/script.js' %}"></script>
+   </body>
+   
+</html>
+
+{% endblock %}

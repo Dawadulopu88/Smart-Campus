@@ -1,0 +1,869 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ title }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Transport Management</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2">
+                        <i class="fas fa-download"></i> Export Routes
+                    </a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addRouteModal">
+                        <i class="fas fa-plus"></i> Add Route
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transport Statistics Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-primary-light rounded mr-3">
+                                <i class="fas fa-bus text-primary"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Total Buses</div>
+                                <h4 class="mb-0 text-primary">15</h4>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-up"></i> 2 new this year
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-success-light rounded mr-3">
+                                <i class="fas fa-users text-success"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Students Using</div>
+                                <h4 class="mb-0 text-success">450</h4>
+                                <small class="text-success">
+                                    65% of total students
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-warning-light rounded mr-3">
+                                <i class="fas fa-route text-warning"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Active Routes</div>
+                                <h4 class="mb-0 text-warning">8</h4>
+                                <small class="text-info">
+                                    Covering 12 areas
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-info-light rounded mr-3">
+                                <i class="fas fa-money-bill-wave text-info"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Monthly Revenue</div>
+                                <h4 class="mb-0 text-info">৳ 85,500</h4>
+                                <small class="text-info">
+                                    Transport fees
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Row -->
+        <div class="row">
+            <!-- Bus Routes & Schedule -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-map-marked-alt"></i> Bus Routes & Schedule
+                        </h5>
+                        <div class="card-header-toolbar">
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-outline-secondary btn-sm active">All Routes</button>
+                                <button class="btn btn-outline-secondary btn-sm">Morning</button>
+                                <button class="btn btn-outline-secondary btn-sm">Evening</button>
+                                <button class="btn btn-outline-secondary btn-sm">Maintenance</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Route Cards -->
+                        <div class="row">
+                            <!-- Route 1 -->
+                            <div class="col-md-6 mb-4">
+                                <div class="route-card active">
+                                    <div class="route-header">
+                                        <div class="route-info">
+                                            <h6 class="route-name">Route A - Dhanmondi</h6>
+                                            <div class="bus-number">Bus #SC-101</div>
+                                        </div>
+                                        <div class="route-status">
+                                            <span class="badge badge-success">Active</span>
+                                        </div>
+                                    </div>
+                                    <div class="route-body">
+                                        <div class="route-details">
+                                            <div class="detail-item">
+                                                <i class="fas fa-clock"></i>
+                                                <span>7:30 AM - 2:30 PM</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <i class="fas fa-users"></i>
+                                                <span>45/50 students</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <i class="fas fa-user-tie"></i>
+                                                <span>Driver: Karim Khan</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-stops">
+                                            <h6>Stops:</h6>
+                                            <div class="stops-list">
+                                                <span class="stop-badge">Dhanmondi 15</span>
+                                                <span class="stop-badge">Dhanmondi 8</span>
+                                                <span class="stop-badge">Elephant Road</span>
+                                                <span class="stop-badge">New Market</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-actions">
+                                            <button class="btn btn-sm btn-outline-primary" title="Track Bus">
+                                                <i class="fas fa-map-marker-alt"></i> Track
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" title="View Students">
+                                                <i class="fas fa-users"></i> Students
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-warning" title="Edit Route">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Route 2 -->
+                            <div class="col-md-6 mb-4">
+                                <div class="route-card active">
+                                    <div class="route-header">
+                                        <div class="route-info">
+                                            <h6 class="route-name">Route B - Gulshan</h6>
+                                            <div class="bus-number">Bus #SC-102</div>
+                                        </div>
+                                        <div class="route-status">
+                                            <span class="badge badge-success">Active</span>
+                                        </div>
+                                    </div>
+                                    <div class="route-body">
+                                        <div class="route-details">
+                                            <div class="detail-item">
+                                                <i class="fas fa-clock"></i>
+                                                <span>7:45 AM - 2:45 PM</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <i class="fas fa-users"></i>
+                                                <span>38/45 students</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <i class="fas fa-user-tie"></i>
+                                                <span>Driver: Rahman Ali</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-stops">
+                                            <h6>Stops:</h6>
+                                            <div class="stops-list">
+                                                <span class="stop-badge">Gulshan 1</span>
+                                                <span class="stop-badge">Gulshan 2</span>
+                                                <span class="stop-badge">Banani</span>
+                                                <span class="stop-badge">Mohakhali</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-actions">
+                                            <button class="btn btn-sm btn-outline-primary" title="Track Bus">
+                                                <i class="fas fa-map-marker-alt"></i> Track
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" title="View Students">
+                                                <i class="fas fa-users"></i> Students
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-warning" title="Edit Route">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Route 3 -->
+                            <div class="col-md-6 mb-4">
+                                <div class="route-card active">
+                                    <div class="route-header">
+                                        <div class="route-info">
+                                            <h6 class="route-name">Route C - Uttara</h6>
+                                            <div class="bus-number">Bus #SC-103</div>
+                                        </div>
+                                        <div class="route-status">
+                                            <span class="badge badge-success">Active</span>
+                                        </div>
+                                    </div>
+                                    <div class="route-body">
+                                        <div class="route-details">
+                                            <div class="detail-item">
+                                                <i class="fas fa-clock"></i>
+                                                <span>7:15 AM - 2:15 PM</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <i class="fas fa-users"></i>
+                                                <span>42/50 students</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <i class="fas fa-user-tie"></i>
+                                                <span>Driver: Nasir Ahmed</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-stops">
+                                            <h6>Stops:</h6>
+                                            <div class="stops-list">
+                                                <span class="stop-badge">Uttara Sector 3</span>
+                                                <span class="stop-badge">Uttara Sector 7</span>
+                                                <span class="stop-badge">Airport Road</span>
+                                                <span class="stop-badge">Tejgaon</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-actions">
+                                            <button class="btn btn-sm btn-outline-primary" title="Track Bus">
+                                                <i class="fas fa-map-marker-alt"></i> Track
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" title="View Students">
+                                                <i class="fas fa-users"></i> Students
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-warning" title="Edit Route">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Route 4 - Maintenance -->
+                            <div class="col-md-6 mb-4">
+                                <div class="route-card maintenance">
+                                    <div class="route-header">
+                                        <div class="route-info">
+                                            <h6 class="route-name">Route D - Mirpur</h6>
+                                            <div class="bus-number">Bus #SC-104</div>
+                                        </div>
+                                        <div class="route-status">
+                                            <span class="badge badge-danger">Maintenance</span>
+                                        </div>
+                                    </div>
+                                    <div class="route-body">
+                                        <div class="maintenance-info">
+                                            <div class="maintenance-issue">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                                Engine servicing required
+                                            </div>
+                                            <div class="maintenance-details">
+                                                <div class="detail-item">
+                                                    <i class="fas fa-calendar"></i>
+                                                    <span>Started: Sep 29, 2025</span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-clock"></i>
+                                                    <span>Expected: Oct 2, 2025</span>
+                                                </div>
+                                            </div>
+                                            <div class="alternative-info">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-info-circle"></i>
+                                                    Students reassigned to nearby routes
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="route-actions">
+                                            <button class="btn btn-sm btn-outline-info" title="Maintenance Details">
+                                                <i class="fas fa-tools"></i> Details
+                                            </button>
+                                            <button class="btn btn-sm btn-success" title="Mark Ready">
+                                                <i class="fas fa-check"></i> Ready
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Live Tracking Map Placeholder -->
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="fas fa-map"></i> Live Bus Tracking
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="map-placeholder">
+                                    <div class="map-content">
+                                        <i class="fas fa-map text-muted"></i>
+                                        <h6 class="text-muted mt-2">Interactive Map</h6>
+                                        <p class="text-muted">Real-time bus locations and routes</p>
+                                        <div class="bus-markers">
+                                            <div class="bus-marker active" data-bus="SC-101">
+                                                <i class="fas fa-bus"></i>
+                                                <span>SC-101</span>
+                                            </div>
+                                            <div class="bus-marker active" data-bus="SC-102">
+                                                <i class="fas fa-bus"></i>
+                                                <span>SC-102</span>
+                                            </div>
+                                            <div class="bus-marker active" data-bus="SC-103">
+                                                <i class="fas fa-bus"></i>
+                                                <span>SC-103</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-md-4">
+                <!-- Bus Status Today -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-tachometer-alt"></i> Today's Status
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="status-timeline">
+                            <div class="status-item">
+                                <div class="status-icon bg-success">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="status-content">
+                                    <h6>Morning Pickup</h6>
+                                    <p class="text-muted small mb-1">All buses departed</p>
+                                    <span class="text-success">7:30 AM - Completed</span>
+                                </div>
+                            </div>
+                            
+                            <div class="status-item">
+                                <div class="status-icon bg-primary">
+                                    <i class="fas fa-route"></i>
+                                </div>
+                                <div class="status-content">
+                                    <h6>Currently Running</h6>
+                                    <p class="text-muted small mb-1">12 buses on route</p>
+                                    <span class="text-primary">All on schedule</span>
+                                </div>
+                            </div>
+                            
+                            <div class="status-item">
+                                <div class="status-icon bg-warning">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="status-content">
+                                    <h6>Evening Pickup</h6>
+                                    <p class="text-muted small mb-1">Scheduled departure</p>
+                                    <span class="text-warning">2:30 PM - Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-history"></i> Recent Activities
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline">
+                            <div class="activity-item">
+                                <div class="activity-icon bg-success">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>New Registration</h6>
+                                    <p class="text-muted small mb-1">Fatema Khan - Route A</p>
+                                    <span class="text-success">Class VIII</span>
+                                    <span class="text-muted small float-right">2 hours ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-warning">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Maintenance Started</h6>
+                                    <p class="text-muted small mb-1">Bus SC-104</p>
+                                    <span class="text-warning">Engine servicing</span>
+                                    <span class="text-muted small float-right">1 day ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-info">
+                                    <i class="fas fa-route"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Route Updated</h6>
+                                    <p class="text-muted small mb-1">Route B - New stop added</p>
+                                    <span class="text-info">Banani Circle</span>
+                                    <span class="text-muted small float-right">2 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-bolt"></i> Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-block mb-2">
+                                <i class="fas fa-user-plus mr-2"></i>
+                                Register Student
+                            </button>
+                            
+                            <button class="btn btn-success btn-block mb-2">
+                                <i class="fas fa-route mr-2"></i>
+                                Add New Route
+                            </button>
+                            
+                            <button class="btn btn-info btn-block mb-2">
+                                <i class="fas fa-map-marked-alt mr-2"></i>
+                                Track All Buses
+                            </button>
+                            
+                            <button class="btn btn-warning btn-block mb-2">
+                                <i class="fas fa-tools mr-2"></i>
+                                Schedule Maintenance
+                            </button>
+                            
+                            <button class="btn btn-secondary btn-block mb-2">
+                                <i class="fas fa-chart-bar mr-2"></i>
+                                Transport Reports
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Driver Information -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-users"></i> Driver Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="driver-list">
+                            <div class="driver-item">
+                                <div class="driver-info">
+                                    <div class="driver-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="driver-details">
+                                        <strong>Karim Khan</strong><br>
+                                        <small class="text-muted">Bus SC-101</small><br>
+                                        <span class="badge badge-success">On Duty</span>
+                                    </div>
+                                </div>
+                                <div class="driver-contact">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="driver-item">
+                                <div class="driver-info">
+                                    <div class="driver-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="driver-details">
+                                        <strong>Rahman Ali</strong><br>
+                                        <small class="text-muted">Bus SC-102</small><br>
+                                        <span class="badge badge-success">On Duty</span>
+                                    </div>
+                                </div>
+                                <div class="driver-contact">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="driver-item">
+                                <div class="driver-info">
+                                    <div class="driver-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="driver-details">
+                                        <strong>Nasir Ahmed</strong><br>
+                                        <small class="text-muted">Bus SC-103</small><br>
+                                        <span class="badge badge-success">On Duty</span>
+                                    </div>
+                                </div>
+                                <div class="driver-contact">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+.avatar-large {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.1); }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.1); }
+.bg-info-light { background-color: rgba(13, 202, 240, 0.1); }
+
+.route-card {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+}
+
+.route-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.route-card.active {
+    border-color: #28a745;
+    background: linear-gradient(135deg, #ffffff, #f8fff9);
+}
+
+.route-card.maintenance {
+    border-color: #dc3545;
+    background: linear-gradient(135deg, #ffffff, #fff8f8);
+}
+
+.route-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.route-name {
+    margin: 0;
+    color: #495057;
+    font-weight: 600;
+}
+
+.bus-number {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+.route-body {
+    padding: 15px;
+}
+
+.route-details {
+    margin-bottom: 15px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #495057;
+}
+
+.route-stops h6 {
+    margin-bottom: 8px;
+    color: #6c757d;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.stops-list {
+    margin-bottom: 15px;
+}
+
+.stop-badge {
+    display: inline-block;
+    background: #e9ecef;
+    color: #495057;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin: 2px;
+    font-size: 11px;
+}
+
+.maintenance-info {
+    margin-bottom: 15px;
+}
+
+.maintenance-issue {
+    color: #dc3545;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.alternative-info {
+    margin-top: 10px;
+}
+
+.route-actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.map-placeholder {
+    height: 300px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.map-content {
+    text-align: center;
+}
+
+.bus-markers {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bus-marker {
+    background: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.status-timeline, .activity-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.status-item, .activity-item {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.status-item:not(:last-child):before,
+.activity-item:not(:last-child):before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 30px;
+    height: calc(100% - 10px);
+    width: 2px;
+    background: #e9ecef;
+}
+
+.status-icon, .activity-icon {
+    position: absolute;
+    left: -23px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+}
+
+.driver-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.driver-item:last-child {
+    border-bottom: none;
+}
+
+.driver-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.driver-avatar {
+    width: 40px;
+    height: 40px;
+    background: #e9ecef;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+.card-header-toolbar {
+    margin-left: auto;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.d-grid {
+    display: grid;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+</style>
+
+<!-- JavaScript for interactive features -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter buttons functionality
+    document.querySelectorAll('.btn-group .btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const filterType = this.textContent;
+            console.log('Filtering by:', filterType);
+        });
+    });
+
+    // Bus marker animation
+    document.querySelectorAll('.bus-marker').forEach(marker => {
+        marker.addEventListener('click', function() {
+            const busNumber = this.dataset.bus;
+            alert(`Tracking Bus ${busNumber}\nThis is a demo feature.`);
+        });
+        
+        // Add pulsing animation
+        setInterval(() => {
+            marker.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                marker.style.transform = 'scale(1)';
+            }, 500);
+        }, 3000);
+    });
+
+    // Route card click functionality
+    document.querySelectorAll('.route-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if (!e.target.closest('.route-actions')) {
+                const routeName = this.querySelector('.route-name').textContent;
+                console.log('Route selected:', routeName);
+            }
+        });
+    });
+
+    // Demo functionality for buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (!this.getAttribute('data-toggle') && !this.getAttribute('href') && 
+                !this.closest('.btn-group') && !this.dataset.bus) {
+                e.preventDefault();
+                alert('This feature is coming soon! This is a demo page.');
+            }
+        });
+    });
+
+    // Simulate real-time bus movement
+    setInterval(() => {
+        document.querySelectorAll('.bus-marker').forEach((marker, index) => {
+            const directions = ['translateX(5px)', 'translateY(5px)', 'translateX(-5px)', 'translateY(-5px)'];
+            marker.style.transform = directions[Math.floor(Math.random() * directions.length)];
+            setTimeout(() => {
+                marker.style.transform = 'translate(0, 0)';
+            }, 1000);
+        });
+    }, 10000); // Every 10 seconds
+});
+</script>
+{% endblock %}

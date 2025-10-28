@@ -1,0 +1,468 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-sm-6">
+                    <h3 class="page-title mb-0">Inbox</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Inbox</li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 text-sm-right mt-3 mt-sm-0">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#composeModal">
+                        <i class="fas fa-plus"></i> Compose Message
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item border-0 p-2">
+                                <a href="#" class="text-decoration-none text-primary" onclick="filterMessages('all')">
+                                    <i class="fas fa-inbox mr-2"></i>
+                                    <span>All Messages</span>
+                                    <span class="badge badge-primary float-right">15</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-2">
+                                <a href="#" class="text-decoration-none" onclick="filterMessages('unread')">
+                                    <i class="fas fa-envelope mr-2"></i>
+                                    <span>Unread</span>
+                                    <span class="badge badge-danger float-right">3</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-2">
+                                <a href="#" class="text-decoration-none" onclick="filterMessages('sent')">
+                                    <i class="fas fa-paper-plane mr-2"></i>
+                                    <span>Sent</span>
+                                    <span class="badge badge-secondary float-right">8</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-2">
+                                <a href="#" class="text-decoration-none" onclick="filterMessages('important')">
+                                    <i class="fas fa-star mr-2"></i>
+                                    <span>Important</span>
+                                    <span class="badge badge-warning float-right">2</span>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-2">
+                                <a href="#" class="text-decoration-none" onclick="filterMessages('trash')">
+                                    <i class="fas fa-trash mr-2"></i>
+                                    <span>Trash</span>
+                                    <span class="badge badge-dark float-right">5</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message List -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Messages</h5>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="markAllAsRead()">
+                                <i class="fas fa-check"></i> Mark All Read
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSelected()">
+                                <i class="fas fa-trash"></i> Delete Selected
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="messagesTable">
+                                <tbody>
+                                    {% for message in sample_messages %}
+                                    <!-- Message Row {{ forloop.counter }} -->
+                                    <tr class="message-row {% if message.is_unread %}unread{% endif %}" data-category="{% if message.is_unread %}unread {% endif %}{% if message.is_starred %}important {% endif %}all" onclick="openMessage(this)">
+                                        <td style="width: 40px;">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input message-checkbox" id="msg{{ forloop.counter }}">
+                                                <label class="custom-control-label" for="msg{{ forloop.counter }}"></label>
+                                            </div>
+                                        </td>
+                                        <td style="width: 40px;">
+                                            <button class="btn btn-sm btn-link text-warning star-btn {% if message.is_starred %}starred{% endif %}" onclick="toggleStar(this, event)">
+                                                <i class="{% if message.is_starred %}fas{% else %}far{% endif %} fa-star"></i>
+                                            </button>
+                                        </td>
+                                        <td style="width: 200px;">
+                                            <div class="d-flex align-items-center">
+                                                {% if message.sender.profile_image %}
+                                                    <img src="{{ message.sender.profile_image.url }}" alt="User" class="rounded-circle mr-2" width="32" height="32">
+                                                {% elif message.sender_type == 'Teacher' and message.sender.teacher_image %}
+                                                    <img src="{{ message.sender.teacher_image.url }}" alt="User" class="rounded-circle mr-2" width="32" height="32">
+                                                {% else %}
+                                                    <img src="{% static 'assets/img/user.jpg' %}" alt="User" class="rounded-circle mr-2" width="32" height="32">
+                                                {% endif %}
+                                                <div>
+                                                    <div class="{% if message.is_unread %}font-weight-bold{% endif %}">
+                                                        {% if message.sender_type == 'Teacher' %}
+                                                            {{ message.sender.first_name }} {{ message.sender.last_name }}
+                                                        {% else %}
+                                                            {{ message.sender.first_name }} {{ message.sender.last_name|default:message.sender.username }}
+                                                        {% endif %}
+                                                    </div>
+                                                    <small class="text-muted">{{ message.sender_type }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="{% if message.is_unread %}font-weight-bold{% endif %}">{{ message.subject }}</div>
+                                            <div class="text-muted">{{ message.content }}</div>
+                                        </td>
+                                        <td style="width: 100px;" class="text-right">
+                                            <div class="text-muted">
+                                                <small>{{ message.time }}</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">
+                                            <i class="fas fa-inbox fa-2x mb-2"></i><br>
+                                            No messages found. Create some users to see sample messages.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Copyright © 2025 Smart Campus.</p>
+    </footer>
+</div>
+
+<!-- Compose Message Modal -->
+<div class="modal fade" id="composeModal" tabindex="-1" role="dialog" aria-labelledby="composeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="composeModalLabel">
+                    <i class="fas fa-edit"></i> Compose New Message
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="composeForm">
+                    <div class="form-group">
+                        <label for="recipient">To:</label>
+                        <select class="form-control" id="recipient" required>
+                            <option value="">Select recipient...</option>
+                            <option value="admin">All Administrators</option>
+                            <option value="teachers">All Teachers</option>
+                            <option value="students">All Students</option>
+                            <option value="specific">Specific User</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="specificUserGroup" style="display: none;">
+                        <label for="specificUser">Specific User:</label>
+                        <input type="text" class="form-control" id="specificUser" placeholder="Enter username or email">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject:</label>
+                        <input type="text" class="form-control" id="subject" required placeholder="Enter message subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Priority:</label>
+                        <select class="form-control" id="priority">
+                            <option value="normal">Normal</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message:</label>
+                        <textarea class="form-control" id="message" rows="8" required placeholder="Type your message here..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="attachment">Attachment:</label>
+                        <input type="file" class="form-control-file" id="attachment" multiple>
+                        <small class="form-text text-muted">You can select multiple files (max 10MB each)</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-primary" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Message Detail Modal -->
+<div class="modal fade" id="messageDetailModal" tabindex="-1" role="dialog" aria-labelledby="messageDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageDetailModalLabel">Message Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="messageDetailContent">
+                <!-- Message content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" onclick="replyToMessage()">
+                    <i class="fas fa-reply"></i> Reply
+                </button>
+                <button type="button" class="btn btn-outline-info" onclick="forwardMessage()">
+                    <i class="fas fa-share"></i> Forward
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="deleteMessage()">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.message-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.message-row:hover {
+    background-color: #f8f9fa !important;
+}
+
+.message-row.unread {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+}
+
+.message-row.unread .font-weight-bold {
+    font-weight: bold !important;
+}
+
+.star-btn {
+    border: none !important;
+    padding: 0 !important;
+    width: 30px;
+    height: 30px;
+}
+
+.star-btn.starred {
+    color: #ffc107 !important;
+}
+
+.list-group-item a {
+    color: #6c757d;
+    transition: color 0.2s;
+}
+
+.list-group-item a:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.list-group-item a.text-primary {
+    color: #007bff !important;
+    font-weight: 500;
+}
+
+.message-checkbox {
+    cursor: pointer;
+}
+
+.table td {
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
+    padding: 12px;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid #e9ecef;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.btn-group .btn {
+    margin-left: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle recipient selection change
+    document.getElementById('recipient').addEventListener('change', function() {
+        const specificUserGroup = document.getElementById('specificUserGroup');
+        if (this.value === 'specific') {
+            specificUserGroup.style.display = 'block';
+        } else {
+            specificUserGroup.style.display = 'none';
+        }
+    });
+});
+
+function filterMessages(category) {
+    const rows = document.querySelectorAll('.message-row');
+    const sidebarLinks = document.querySelectorAll('.list-group-item a');
+    
+    // Reset sidebar active states
+    sidebarLinks.forEach(link => {
+        link.classList.remove('text-primary');
+    });
+    
+    // Set active sidebar link
+    event.target.classList.add('text-primary');
+    
+    rows.forEach(row => {
+        if (category === 'all') {
+            row.style.display = '';
+        } else if (category === 'important') {
+            if (row.querySelector('.star-btn.starred')) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        } else {
+            if (row.dataset.category.includes(category)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+}
+
+function toggleStar(button, event) {
+    event.stopPropagation();
+    const icon = button.querySelector('i');
+    const row = button.closest('.message-row');
+    
+    if (button.classList.contains('starred')) {
+        button.classList.remove('starred');
+        icon.classList.remove('fas');
+        icon.classList.add('far');
+        // Remove 'important' from data-category
+        row.dataset.category = row.dataset.category.replace(' important', '');
+    } else {
+        button.classList.add('starred');
+        icon.classList.remove('far');
+        icon.classList.add('fas');
+        // Add 'important' to data-category
+        row.dataset.category += ' important';
+    }
+}
+
+function openMessage(row) {
+    // Mark as read
+    row.classList.remove('unread');
+    row.style.backgroundColor = '';
+    row.style.borderLeft = '';
+    
+    // Get message details
+    const sender = row.querySelector('td:nth-child(3) div div').textContent;
+    const subject = row.querySelector('td:nth-child(4) div').textContent;
+    const content = row.querySelector('td:nth-child(4) .text-muted').textContent;
+    const time = row.querySelector('td:nth-child(5) small').textContent;
+    
+    // Populate modal
+    document.getElementById('messageDetailContent').innerHTML = `
+        <div class="border-bottom pb-3 mb-3">
+            <h6 class="mb-1">${subject}</h6>
+            <small class="text-muted">From: ${sender} • ${time}</small>
+        </div>
+        <div class="message-content">
+            <p>${content}</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+    `;
+    
+    // Show modal
+    $('#messageDetailModal').modal('show');
+}
+
+function sendMessage() {
+    const form = document.getElementById('composeForm');
+    if (form.checkValidity()) {
+        // Simulate sending message
+        alert('Message sent successfully!');
+        $('#composeModal').modal('hide');
+        form.reset();
+    } else {
+        form.reportValidity();
+    }
+}
+
+function markAllAsRead() {
+    const unreadRows = document.querySelectorAll('.message-row.unread');
+    unreadRows.forEach(row => {
+        row.classList.remove('unread');
+        row.style.backgroundColor = '';
+        row.style.borderLeft = '';
+    });
+    alert('All messages marked as read!');
+}
+
+function deleteSelected() {
+    const checkedBoxes = document.querySelectorAll('.message-checkbox:checked');
+    if (checkedBoxes.length === 0) {
+        alert('Please select messages to delete.');
+        return;
+    }
+    
+    if (confirm(`Delete ${checkedBoxes.length} selected message(s)?`)) {
+        checkedBoxes.forEach(checkbox => {
+            const row = checkbox.closest('.message-row');
+            row.remove();
+        });
+        alert('Selected messages deleted!');
+    }
+}
+
+function replyToMessage() {
+    $('#messageDetailModal').modal('hide');
+    $('#composeModal').modal('show');
+    // Pre-fill reply data
+    document.getElementById('subject').value = 'Re: ' + document.querySelector('#messageDetailContent h6').textContent;
+}
+
+function forwardMessage() {
+    $('#messageDetailModal').modal('hide');
+    $('#composeModal').modal('show');
+    // Pre-fill forward data
+    document.getElementById('subject').value = 'Fwd: ' + document.querySelector('#messageDetailContent h6').textContent;
+}
+
+function deleteMessage() {
+    if (confirm('Delete this message?')) {
+        $('#messageDetailModal').modal('hide');
+        alert('Message deleted!');
+    }
+}
+</script>
+{% endblock %}

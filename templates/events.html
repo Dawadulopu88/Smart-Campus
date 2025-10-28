@@ -1,0 +1,520 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ title }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Campus Events</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2">
+                        <i class="fas fa-calendar-export"></i> Export Calendar
+                    </a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addEventModal">
+                        <i class="fas fa-plus"></i> Create Event
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Statistics Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-primary-light rounded mr-3">
+                                <i class="fas fa-calendar-day text-primary"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Total Events</div>
+                                <h4 class="mb-0 text-primary">45</h4>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-up"></i> 8 this month
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-warning-light rounded mr-3">
+                                <i class="fas fa-clock text-warning"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Upcoming</div>
+                                <h4 class="mb-0 text-warning">12</h4>
+                                <small class="text-info">
+                                    Next 30 days
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-success-light rounded mr-3">
+                                <i class="fas fa-users text-success"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Participants</div>
+                                <h4 class="mb-0 text-success">1,250</h4>
+                                <small class="text-success">
+                                    Total registrations
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-info-light rounded mr-3">
+                                <i class="fas fa-trophy text-info"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Completed</div>
+                                <h4 class="mb-0 text-info">33</h4>
+                                <small class="text-info">
+                                    Successful events
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Upcoming Events -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-star"></i> Featured Upcoming Events
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Event 1 -->
+                            <div class="col-md-6 mb-4">
+                                <div class="event-card">
+                                    <div class="event-image">
+                                        <img src="{% static 'assets/img/event1.jpg' %}" alt="Science Fair" class="img-fluid rounded">
+                                        <div class="event-date-badge">
+                                            <span class="month">OCT</span>
+                                            <span class="day">15</span>
+                                        </div>
+                                    </div>
+                                    <div class="event-content">
+                                        <h6 class="event-title">Annual Science Fair 2025</h6>
+                                        <div class="event-meta">
+                                            <i class="fas fa-clock text-muted mr-1"></i>
+                                            <small class="text-muted">9:00 AM - 5:00 PM</small>
+                                        </div>
+                                        <div class="event-meta">
+                                            <i class="fas fa-map-marker-alt text-muted mr-1"></i>
+                                            <small class="text-muted">Main Auditorium</small>
+                                        </div>
+                                        <p class="event-description">Students showcase innovative science projects and experiments.</p>
+                                        <div class="event-footer">
+                                            <span class="badge badge-primary">Academic</span>
+                                            <small class="text-success float-right">
+                                                <i class="fas fa-users"></i> 150 registered
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Event 2 -->
+                            <div class="col-md-6 mb-4">
+                                <div class="event-card">
+                                    <div class="event-image">
+                                        <img src="{% static 'assets/img/event2.jpg' %}" alt="Sports Day" class="img-fluid rounded">
+                                        <div class="event-date-badge">
+                                            <span class="month">OCT</span>
+                                            <span class="day">22</span>
+                                        </div>
+                                    </div>
+                                    <div class="event-content">
+                                        <h6 class="event-title">Inter-House Sports Day</h6>
+                                        <div class="event-meta">
+                                            <i class="fas fa-clock text-muted mr-1"></i>
+                                            <small class="text-muted">8:00 AM - 4:00 PM</small>
+                                        </div>
+                                        <div class="event-meta">
+                                            <i class="fas fa-map-marker-alt text-muted mr-1"></i>
+                                            <small class="text-muted">Sports Ground</small>
+                                        </div>
+                                        <p class="event-description">Annual sports competition between different houses.</p>
+                                        <div class="event-footer">
+                                            <span class="badge badge-success">Sports</span>
+                                            <small class="text-success float-right">
+                                                <i class="fas fa-users"></i> 300 participants
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Event 3 -->
+                            <div class="col-md-6 mb-4">
+                                <div class="event-card">
+                                    <div class="event-image">
+                                        <img src="{% static 'assets/img/event3.jpg' %}" alt="Cultural Program" class="img-fluid rounded">
+                                        <div class="event-date-badge">
+                                            <span class="month">NOV</span>
+                                            <span class="day">05</span>
+                                        </div>
+                                    </div>
+                                    <div class="event-content">
+                                        <h6 class="event-title">Victory Day Cultural Program</h6>
+                                        <div class="event-meta">
+                                            <i class="fas fa-clock text-muted mr-1"></i>
+                                            <small class="text-muted">6:00 PM - 9:00 PM</small>
+                                        </div>
+                                        <div class="event-meta">
+                                            <i class="fas fa-map-marker-alt text-muted mr-1"></i>
+                                            <small class="text-muted">School Theater</small>
+                                        </div>
+                                        <p class="event-description">Cultural performances celebrating Bangladesh Victory Day.</p>
+                                        <div class="event-footer">
+                                            <span class="badge badge-warning">Cultural</span>
+                                            <small class="text-success float-right">
+                                                <i class="fas fa-users"></i> 200 expected
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Event 4 -->
+                            <div class="col-md-6 mb-4">
+                                <div class="event-card">
+                                    <div class="event-image">
+                                        <img src="{% static 'assets/img/event4.jpg' %}" alt="Workshop" class="img-fluid rounded">
+                                        <div class="event-date-badge">
+                                            <span class="month">NOV</span>
+                                            <span class="day">12</span>
+                                        </div>
+                                    </div>
+                                    <div class="event-content">
+                                        <h6 class="event-title">Career Guidance Workshop</h6>
+                                        <div class="event-meta">
+                                            <i class="fas fa-clock text-muted mr-1"></i>
+                                            <small class="text-muted">2:00 PM - 5:00 PM</small>
+                                        </div>
+                                        <div class="event-meta">
+                                            <i class="fas fa-map-marker-alt text-muted mr-1"></i>
+                                            <small class="text-muted">Conference Hall</small>
+                                        </div>
+                                        <p class="event-description">Professional guidance for students' future career planning.</p>
+                                        <div class="event-footer">
+                                            <span class="badge badge-info">Workshop</span>
+                                            <small class="text-success float-right">
+                                                <i class="fas fa-users"></i> 80 seats
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Categories & Quick Actions -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-filter"></i> Event Categories
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="event-categories">
+                            <div class="category-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="category-name">
+                                        <i class="fas fa-graduation-cap text-primary mr-2"></i>
+                                        Academic
+                                    </span>
+                                    <span class="badge badge-primary">12</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 4px;">
+                                    <div class="progress-bar bg-primary" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="category-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="category-name">
+                                        <i class="fas fa-running text-success mr-2"></i>
+                                        Sports
+                                    </span>
+                                    <span class="badge badge-success">8</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 4px;">
+                                    <div class="progress-bar bg-success" style="width: 40%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="category-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="category-name">
+                                        <i class="fas fa-theater-masks text-warning mr-2"></i>
+                                        Cultural
+                                    </span>
+                                    <span class="badge badge-warning">15</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 4px;">
+                                    <div class="progress-bar bg-warning" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="category-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="category-name">
+                                        <i class="fas fa-tools text-info mr-2"></i>
+                                        Workshop
+                                    </span>
+                                    <span class="badge badge-info">6</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 4px;">
+                                    <div class="progress-bar bg-info" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="category-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="category-name">
+                                        <i class="fas fa-handshake text-secondary mr-2"></i>
+                                        Social
+                                    </span>
+                                    <span class="badge badge-secondary">4</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 4px;">
+                                    <div class="progress-bar bg-secondary" style="width: 20%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-bolt"></i> Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-block mb-2">
+                                <i class="fas fa-plus mr-2"></i>
+                                Create New Event
+                            </button>
+                            
+                            <button class="btn btn-success btn-block mb-2">
+                                <i class="fas fa-users mr-2"></i>
+                                Manage Registrations
+                            </button>
+                            
+                            <button class="btn btn-info btn-block mb-2">
+                                <i class="fas fa-calendar-alt mr-2"></i>
+                                View Calendar
+                            </button>
+                            
+                            <button class="btn btn-warning btn-block mb-2">
+                                <i class="fas fa-bell mr-2"></i>
+                                Send Notifications
+                            </button>
+                            
+                            <button class="btn btn-secondary btn-block mb-2">
+                                <i class="fas fa-cog mr-2"></i>
+                                Event Settings
+                            </button>
+                        </div>
+                        
+                        <!-- Upcoming Event Alert -->
+                        <div class="alert alert-info mt-3">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-info-circle"></i> Next Event
+                            </h6>
+                            <p class="mb-1"><strong>Science Fair 2025</strong></p>
+                            <small>Starting in 2 days - Oct 15, 2025</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+.avatar-large {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.1); }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.1); }
+.bg-info-light { background-color: rgba(13, 202, 240, 0.1); }
+
+.event-card {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    height: 100%;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-image {
+    position: relative;
+    height: 150px;
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.event-date-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+    min-width: 50px;
+}
+
+.event-date-badge .month {
+    display: block;
+    font-size: 10px;
+    font-weight: bold;
+    color: #6c757d;
+}
+
+.event-date-badge .day {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #495057;
+    line-height: 1;
+}
+
+.event-content {
+    padding: 15px;
+}
+
+.event-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #495057;
+}
+
+.event-meta {
+    margin-bottom: 5px;
+}
+
+.event-description {
+    font-size: 13px;
+    color: #6c757d;
+    margin: 10px 0;
+    line-height: 1.4;
+}
+
+.event-footer {
+    border-top: 1px solid #f8f9fa;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.category-item {
+    margin-bottom: 15px;
+}
+
+.category-name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.d-grid {
+    display: grid;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+</style>
+
+<!-- JavaScript for interactive features -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Demo functionality for buttons
+    document.querySelectorAll('.btn, .event-card').forEach(element => {
+        element.addEventListener('click', function(e) {
+            if (!this.getAttribute('data-toggle') && !this.getAttribute('href')) {
+                e.preventDefault();
+                alert('This feature is coming soon! This is a demo page.');
+            }
+        });
+    });
+
+    // Animate progress bars
+    setTimeout(() => {
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            bar.style.transition = 'width 1s ease-in-out';
+        });
+    }, 100);
+});
+</script>
+{% endblock %}

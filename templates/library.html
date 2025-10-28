@@ -1,0 +1,658 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ title }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Library Management</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2">
+                        <i class="fas fa-download"></i> Export Records
+                    </a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal">
+                        <i class="fas fa-plus"></i> Add New Book
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Library Statistics Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-primary-light rounded mr-3">
+                                <i class="fas fa-books text-primary"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Total Books</div>
+                                <h4 class="mb-0 text-primary">12,450</h4>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-up"></i> 150 added this month
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-warning-light rounded mr-3">
+                                <i class="fas fa-book-reader text-warning"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Books Issued</div>
+                                <h4 class="mb-0 text-warning">1,250</h4>
+                                <small class="text-info">
+                                    Currently borrowed
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-success-light rounded mr-3">
+                                <i class="fas fa-users text-success"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Active Members</div>
+                                <h4 class="mb-0 text-success">890</h4>
+                                <small class="text-success">
+                                    Registered users
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-danger-light rounded mr-3">
+                                <i class="fas fa-exclamation-triangle text-danger"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Overdue</div>
+                                <h4 class="mb-0 text-danger">45</h4>
+                                <small class="text-danger">
+                                    Books pending return
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Row -->
+        <div class="row">
+            <!-- Book Inventory -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-search"></i> Book Search & Inventory
+                        </h5>
+                        <div class="card-header-toolbar">
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-outline-secondary btn-sm active">All Books</button>
+                                <button class="btn btn-outline-secondary btn-sm">Available</button>
+                                <button class="btn btn-outline-secondary btn-sm">Issued</button>
+                                <button class="btn btn-outline-secondary btn-sm">Reserved</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Search Bar -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search books by title, author, ISBN...">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control">
+                                    <option>All Categories</option>
+                                    <option>Academic</option>
+                                    <option>Fiction</option>
+                                    <option>Science</option>
+                                    <option>History</option>
+                                    <option>Literature</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control">
+                                    <option>All Languages</option>
+                                    <option>English</option>
+                                    <option>Bangla</option>
+                                    <option>Arabic</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Books Table -->
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Book Details</th>
+                                        <th>Category</th>
+                                        <th>ISBN</th>
+                                        <th>Status</th>
+                                        <th>Location</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="book-info">
+                                                <div class="book-cover">
+                                                    <i class="fas fa-book text-primary"></i>
+                                                </div>
+                                                <div class="book-details">
+                                                    <strong>Advanced Mathematics</strong><br>
+                                                    <small class="text-muted">by Dr. S.U. Ahmed</small><br>
+                                                    <small class="text-info">10th Edition, 2024</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-primary">Academic</span></td>
+                                        <td>978-984-123-456-7</td>
+                                        <td><span class="badge badge-success">Available (5)</span></td>
+                                        <td>Shelf A-15</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success" title="Issue Book">
+                                                    <i class="fas fa-hand-paper"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="book-info">
+                                                <div class="book-cover">
+                                                    <i class="fas fa-book text-success"></i>
+                                                </div>
+                                                <div class="book-details">
+                                                    <strong>English Grammar & Composition</strong><br>
+                                                    <small class="text-muted">by Wren & Martin</small><br>
+                                                    <small class="text-info">Revised Edition, 2023</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-success">Language</span></td>
+                                        <td>978-984-789-123-4</td>
+                                        <td><span class="badge badge-warning">Issued (2/8)</span></td>
+                                        <td>Shelf B-08</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success" title="Issue Book">
+                                                    <i class="fas fa-hand-paper"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="book-info">
+                                                <div class="book-cover">
+                                                    <i class="fas fa-book text-info"></i>
+                                                </div>
+                                                <div class="book-details">
+                                                    <strong>Bangladesh History & Culture</strong><br>
+                                                    <small class="text-muted">by Prof. M.R. Khan</small><br>
+                                                    <small class="text-info">3rd Edition, 2024</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-info">History</span></td>
+                                        <td>978-984-456-789-1</td>
+                                        <td><span class="badge badge-success">Available (12)</span></td>
+                                        <td>Shelf C-22</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success" title="Issue Book">
+                                                    <i class="fas fa-hand-paper"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="book-info">
+                                                <div class="book-cover">
+                                                    <i class="fas fa-book text-danger"></i>
+                                                </div>
+                                                <div class="book-details">
+                                                    <strong>Physics for Class X</strong><br>
+                                                    <small class="text-muted">by Dr. A.K. Tarafder</small><br>
+                                                    <small class="text-info">Latest Edition, 2025</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-danger">Science</span></td>
+                                        <td>978-984-321-654-9</td>
+                                        <td><span class="badge badge-danger">Out of Stock</span></td>
+                                        <td>Shelf D-05</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary" title="Request Order" disabled>
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <nav aria-label="Book pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-md-4">
+                <!-- Recent Activities -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-history"></i> Recent Activities
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline">
+                            <div class="activity-item">
+                                <div class="activity-icon bg-success">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Book Returned</h6>
+                                    <p class="text-muted small mb-1">Rashida Khatun - Class IX</p>
+                                    <span class="text-success">"Advanced Mathematics"</span>
+                                    <span class="text-muted small float-right">2 hours ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-primary">
+                                    <i class="fas fa-hand-paper"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Book Issued</h6>
+                                    <p class="text-muted small mb-1">Karim Ahmed - Class X</p>
+                                    <span class="text-primary">"English Grammar"</span>
+                                    <span class="text-muted small float-right">4 hours ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-warning">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Overdue Notice</h6>
+                                    <p class="text-muted small mb-1">Fatema Begum - Class VIII</p>
+                                    <span class="text-warning">Due: 5 days ago</span>
+                                    <span class="text-muted small float-right">1 day ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-info">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>New Book Added</h6>
+                                    <p class="text-muted small mb-1">Librarian</p>
+                                    <span class="text-info">"Modern Chemistry" (5 copies)</span>
+                                    <span class="text-muted small float-right">2 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-bolt"></i> Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-block mb-2">
+                                <i class="fas fa-hand-paper mr-2"></i>
+                                Issue Book
+                            </button>
+                            
+                            <button class="btn btn-success btn-block mb-2">
+                                <i class="fas fa-undo mr-2"></i>
+                                Return Book
+                            </button>
+                            
+                            <button class="btn btn-info btn-block mb-2">
+                                <i class="fas fa-search mr-2"></i>
+                                Search Catalog
+                            </button>
+                            
+                            <button class="btn btn-warning btn-block mb-2">
+                                <i class="fas fa-bell mr-2"></i>
+                                Send Reminders
+                            </button>
+                            
+                            <button class="btn btn-secondary btn-block mb-2">
+                                <i class="fas fa-chart-bar mr-2"></i>
+                                Library Reports
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Popular Books -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-fire"></i> Popular Books
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="popular-books">
+                            <div class="popular-book-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="rank-number">1</div>
+                                    <div class="book-info-mini">
+                                        <strong>Advanced Mathematics</strong><br>
+                                        <small class="text-muted">85 times borrowed</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="popular-book-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="rank-number">2</div>
+                                    <div class="book-info-mini">
+                                        <strong>English Grammar</strong><br>
+                                        <small class="text-muted">72 times borrowed</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="popular-book-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="rank-number">3</div>
+                                    <div class="book-info-mini">
+                                        <strong>Bangladesh History</strong><br>
+                                        <small class="text-muted">58 times borrowed</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="popular-book-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="rank-number">4</div>
+                                    <div class="book-info-mini">
+                                        <strong>Physics Fundamentals</strong><br>
+                                        <small class="text-muted">45 times borrowed</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+.avatar-large {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.1); }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.1); }
+.bg-danger-light { background-color: rgba(220, 53, 69, 0.1); }
+
+.book-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.book-cover {
+    width: 40px;
+    height: 50px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.book-details {
+    flex: 1;
+}
+
+.activity-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.activity-item {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.activity-item:not(:last-child):before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 30px;
+    height: calc(100% - 10px);
+    width: 2px;
+    background: #e9ecef;
+}
+
+.activity-icon {
+    position: absolute;
+    left: -23px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+}
+
+.popular-book-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.popular-book-item:last-child {
+    border-bottom: none;
+}
+
+.rank-number {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.book-info-mini {
+    flex: 1;
+}
+
+.card-header-toolbar {
+    margin-left: auto;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.d-grid {
+    display: grid;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-group .btn {
+    margin-right: 2px;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+</style>
+
+<!-- JavaScript for interactive features -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter buttons functionality
+    document.querySelectorAll('.btn-group .btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Simple demo notification
+            const filterType = this.textContent;
+            console.log('Filtering by:', filterType);
+        });
+    });
+
+    // Search functionality
+    document.querySelector('.input-group .btn').addEventListener('click', function() {
+        const searchTerm = document.querySelector('.input-group input').value;
+        if (searchTerm.trim()) {
+            console.log('Searching for:', searchTerm);
+            alert(`Searching for: "${searchTerm}"\nThis is a demo feature.`);
+        } else {
+            alert('Please enter a search term.');
+        }
+    });
+
+    // Enter key search
+    document.querySelector('.input-group input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.querySelector('.input-group .btn').click();
+        }
+    });
+
+    // Demo functionality for other buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (!this.getAttribute('data-toggle') && !this.getAttribute('href') && 
+                !this.closest('.input-group') && !this.closest('.btn-group')) {
+                e.preventDefault();
+                alert('This feature is coming soon! This is a demo page.');
+            }
+        });
+    });
+
+    // Book row click functionality
+    document.querySelectorAll('.table tbody tr').forEach(row => {
+        row.addEventListener('click', function(e) {
+            if (!e.target.closest('.btn-group')) {
+                const bookTitle = this.querySelector('strong').textContent;
+                console.log('Book selected:', bookTitle);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

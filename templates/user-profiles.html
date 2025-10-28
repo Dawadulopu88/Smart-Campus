@@ -1,0 +1,176 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+   
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">User Profiles</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">User Profiles</li>
+                    </ul>
+                </div>
+                <div class="col-auto text-right float-right ml-auto">
+                    <div class="view-icons">
+                        <a href="#" class="grid-view btn btn-link active"><i class="fas fa-th"></i></a>
+                        <a href="#" class="list-view btn btn-link"><i class="fas fa-bars"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statistics Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-primary border-primary">
+                                <i class="fas fa-users"></i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>{{ total_users }}</h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">Total Users</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-success border-success">
+                                <i class="fas fa-user-graduate"></i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>{{ total_students }}</h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">Students</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-warning border-warning">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>{{ total_teachers }}</h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">Teachers</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-info border-info">
+                                <i class="fas fa-user-shield"></i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>{{ total_admins }}</h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">Administrators</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Profiles Grid -->
+        <div class="row">
+            {% for user in all_users %}
+            <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="student-box">
+                            <div class="student-img">
+                                <a href="{% url 'profile' %}">
+                                    <img class="img-fluid" alt="User Image" 
+                                         src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}{% static 'user.jpg' %}{% endif %}">
+                                </a>
+                            </div>
+                            <div class="student-content">
+                                <div class="student-info">
+                                    <a href="{% url 'profile' %}">
+                                        <h5>{{ user.get_full_name|default:user.username }}</h5>
+                                    </a>
+                                    <p class="text-muted">
+                                        {% if user.is_admin %}
+                                            <span class="badge badge-primary">Administrator</span>
+                                        {% elif user.is_teacher %}
+                                            <span class="badge badge-success">Teacher</span>
+                                        {% elif user.is_student %}
+                                            <span class="badge badge-warning">Student</span>
+                                        {% else %}
+                                            <span class="badge badge-secondary">User</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="student-details">
+                                    <div class="personal-activity">
+                                        <div class="personal-icons">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div class="views-personal">
+                                            <h4>Email</h4>
+                                            <h5>{{ user.email|truncatechars:25 }}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="personal-activity">
+                                        <div class="personal-icons">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                        <div class="views-personal">
+                                            <h4>Joined</h4>
+                                            <h5>{{ user.date_joined|date:"M d, Y" }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5>No users found</h5>
+                        <p class="text-muted">There are no registered users in the system yet.</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <footer>
+        <p>Copyright © 2025 Smart Campus.</p>
+    </footer>
+</div>
+
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+{% endblock %}

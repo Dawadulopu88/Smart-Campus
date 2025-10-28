@@ -1,0 +1,222 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ title }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'holiday_list' %}">Holidays</a></li>
+                        <li class="breadcrumb-item active">Edit Holiday</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="card-title mb-0">
+                            <i class="fas fa-edit"></i> Edit Holiday: {{ holiday.name }}
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.name.id_for_label }}" class="required">
+                                            <i class="fas fa-calendar-day"></i> {{ form.name.label }}
+                                        </label>
+                                        {{ form.name }}
+                                        {% if form.name.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.name.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.date.id_for_label }}" class="required">
+                                            <i class="fas fa-calendar"></i> {{ form.date.label }}
+                                        </label>
+                                        {{ form.date }}
+                                        {% if form.date.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.date.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.holiday_type.id_for_label }}">
+                                            <i class="fas fa-tags"></i> {{ form.holiday_type.label }}
+                                        </label>
+                                        {{ form.holiday_type }}
+                                        {% if form.holiday_type.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.holiday_type.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-check mt-4">
+                                            {{ form.is_recurring }}
+                                            <label class="form-check-label" for="{{ form.is_recurring.id_for_label }}">
+                                                {{ form.is_recurring.label }}
+                                            </label>
+                                            <small class="form-text text-muted">{{ form.is_recurring.help_text }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.description.id_for_label }}">
+                                    <i class="fas fa-file-alt"></i> {{ form.description.label }}
+                                </label>
+                                {{ form.description }}
+                                {% if form.description.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.description.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Form Errors -->
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    {{ form.non_field_errors.0 }}
+                                </div>
+                            {% endif %}
+
+                            <div class="form-group text-right">
+                                <a href="{% url 'holiday_list' %}" class="btn btn-secondary mr-2">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Update Holiday
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Current Holiday Details Card -->
+                <div class="card mt-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-info-circle"></i> Current Holiday Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p><strong>Original Name:</strong></p>
+                                <p class="text-muted">{{ holiday.name }}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p><strong>Original Date:</strong></p>
+                                <p class="text-muted">{{ holiday.date|date:"F d, Y" }}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p><strong>Type:</strong></p>
+                                <p><span class="badge badge-info">{{ holiday.get_holiday_type_display }}</span></p>
+                            </div>
+                            <div class="col-md-3">
+                                <p><strong>Recurring:</strong></p>
+                                <p>
+                                    {% if holiday.is_recurring %}
+                                        <span class="badge badge-success"><i class="fas fa-check"></i> Yes</span>
+                                    {% else %}
+                                        <span class="badge badge-secondary"><i class="fas fa-times"></i> No</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        {% if holiday.description %}
+                        <div class="row">
+                            <div class="col-12">
+                                <p><strong>Description:</strong></p>
+                                <p class="text-muted">{{ holiday.description }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-12">
+                                <p><strong>Created:</strong> {{ holiday.created_at|date:"F d, Y \a\t g:i A" }}</p>
+                                <p><strong>Last Updated:</strong> {{ holiday.updated_at|date:"F d, Y \a\t g:i A" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Auto focus on the first input field
+    $('#id_name').focus();
+    
+    // Add Bootstrap validation classes
+    $('input, textarea, select').addClass('form-control');
+    
+    // Date input formatting
+    $('#id_date').attr('type', 'date');
+    
+    // Add required field styling
+    $('.required').append(' <span class="text-danger">*</span>');
+    
+    // Form validation feedback
+    $('form').on('submit', function(e) {
+        var isValid = true;
+        $('.form-control').removeClass('is-invalid');
+        
+        // Check required fields
+        $('.required').each(function() {
+            var fieldId = $(this).attr('for');
+            var field = $('#' + fieldId);
+            if (!field.val() || field.val().trim() === '') {
+                field.addClass('is-invalid');
+                isValid = false;
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: $('.is-invalid').first().offset().top - 100
+            }, 500);
+        }
+    });
+});
+</script>
+{% endblock %}

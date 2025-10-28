@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+<title>SmartCampus - Departments</title>
+<link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+<link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/datatables/datatables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Departments</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Departments</li>
+                        </ul>
+                    </div>
+                    {% if user_is_admin %}
+                    <div class="col-auto float-right ml-auto">
+                        <a href="{% url 'add_department' %}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Department
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Success/Error Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">All Departments</h4>
+                            <p class="card-text">Total Departments: <strong>{{ total_departments }}</strong></p>
+                        </div>
+                        <div class="card-body">
+                            {% if departments %}
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover" id="departments-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Department Name</th>
+                                            <th>Description</th>
+                                            <th>Subjects Count</th>
+                                            {% if user_is_admin %}
+                                            <th>Actions</th>
+                                            {% endif %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for department in departments %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>
+                                                <a href="{% url 'department_detail' department.pk %}" class="text-primary">
+                                                    <strong>{{ department.name }}</strong>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {% if department.description %}
+                                                    {{ department.description|truncatewords:10 }}
+                                                {% else %}
+                                                    <em class="text-muted">No description</em>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-info">
+                                                    {{ department.subject_set.count|default:0 }} subjects
+                                                </span>
+                                            </td>
+                                            {% if user_is_admin %}
+                                            <td>
+                                                <div class="actions">
+                                                    <a href="{% url 'department_detail' department.pk %}" class="btn btn-sm btn-outline-primary" title="View Details">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="{% url 'edit_department' department.pk %}" class="btn btn-sm btn-outline-warning" title="Edit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="{% url 'delete_department' department.pk %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-building fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No departments found</h5>
+                                <p class="text-muted">No departments have been added yet.</p>
+                                {% if user_is_admin %}
+                                <a href="{% url 'add_department' %}" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add First Department
+                                </a>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables/datatables.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+    $('#departments-table').DataTable({
+        "pageLength": 10,
+        "ordering": true,
+        "searching": true,
+        "lengthChange": true,
+        "info": true
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,614 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ title }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Time Table</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2">
+                        <i class="fas fa-print"></i> Print Schedule
+                    </a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addScheduleModal">
+                        <i class="fas fa-plus"></i> Add Schedule
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Class Selection and Filters -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <div class="form-group mb-0">
+                                    <label for="classSelect" class="form-label">Select Class</label>
+                                    <select class="form-control" id="classSelect">
+                                        <option value="all">All Classes</option>
+                                        <option value="class-vi">Class VI</option>
+                                        <option value="class-vii">Class VII</option>
+                                        <option value="class-viii">Class VIII</option>
+                                        <option value="class-ix">Class IX</option>
+                                        <option value="class-x" selected>Class X</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group mb-0">
+                                    <label for="sectionSelect" class="form-label">Section</label>
+                                    <select class="form-control" id="sectionSelect">
+                                        <option value="all">All Sections</option>
+                                        <option value="a" selected>Section A</option>
+                                        <option value="b">Section B</option>
+                                        <option value="c">Section C</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group mb-0">
+                                    <label for="weekSelect" class="form-label">Week</label>
+                                    <select class="form-control" id="weekSelect">
+                                        <option value="current" selected>Current Week</option>
+                                        <option value="next">Next Week</option>
+                                        <option value="previous">Previous Week</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group mb-0">
+                                    <label for="viewType" class="form-label">View Type</label>
+                                    <select class="form-control" id="viewType">
+                                        <option value="weekly" selected>Weekly View</option>
+                                        <option value="daily">Daily View</option>
+                                        <option value="teacher">Teacher View</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Table Grid -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-calendar-week"></i> Weekly Schedule - Class X, Section A
+                        </h5>
+                        <div class="card-header-toolbar">
+                            <span class="badge badge-info">October 2025</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered timetable-table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="time-column">Time</th>
+                                        <th class="day-column">Saturday</th>
+                                        <th class="day-column">Sunday</th>
+                                        <th class="day-column">Monday</th>
+                                        <th class="day-column">Tuesday</th>
+                                        <th class="day-column">Wednesday</th>
+                                        <th class="day-column">Thursday</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="time-slot">8:00 - 8:45</td>
+                                        <td class="subject-slot math">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Mathematics</span>
+                                                <span class="teacher-name">Mr. Rahman</span>
+                                                <span class="room-name">Room 101</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot english">
+                                            <div class="subject-info">
+                                                <span class="subject-name">English</span>
+                                                <span class="teacher-name">Ms. Fatima</span>
+                                                <span class="room-name">Room 205</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot physics">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Physics</span>
+                                                <span class="teacher-name">Dr. Ahmed</span>
+                                                <span class="room-name">Lab 201</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot chemistry">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Chemistry</span>
+                                                <span class="teacher-name">Ms. Nasreen</span>
+                                                <span class="room-name">Lab 301</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot biology">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Biology</span>
+                                                <span class="teacher-name">Dr. Karim</span>
+                                                <span class="room-name">Lab 302</span>
+                                            </div>
+                                        </td>
+                                        <td class="break-slot">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Assembly</span>
+                                                <span class="teacher-name">All Teachers</span>
+                                                <span class="room-name">Main Hall</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="time-slot">8:45 - 9:30</td>
+                                        <td class="subject-slot english">
+                                            <div class="subject-info">
+                                                <span class="subject-name">English</span>
+                                                <span class="teacher-name">Ms. Fatima</span>
+                                                <span class="room-name">Room 205</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot math">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Mathematics</span>
+                                                <span class="teacher-name">Mr. Rahman</span>
+                                                <span class="room-name">Room 101</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot chemistry">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Chemistry</span>
+                                                <span class="teacher-name">Ms. Nasreen</span>
+                                                <span class="room-name">Lab 301</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot physics">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Physics</span>
+                                                <span class="teacher-name">Dr. Ahmed</span>
+                                                <span class="room-name">Lab 201</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot bangla">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Bangla</span>
+                                                <span class="teacher-name">Mr. Hasan</span>
+                                                <span class="room-name">Room 103</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot math">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Mathematics</span>
+                                                <span class="teacher-name">Mr. Rahman</span>
+                                                <span class="room-name">Room 101</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="time-slot">9:30 - 10:15</td>
+                                        <td class="subject-slot physics">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Physics</span>
+                                                <span class="teacher-name">Dr. Ahmed</span>
+                                                <span class="room-name">Lab 201</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot bangla">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Bangla</span>
+                                                <span class="teacher-name">Mr. Hasan</span>
+                                                <span class="room-name">Room 103</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot english">
+                                            <div class="subject-info">
+                                                <span class="subject-name">English</span>
+                                                <span class="teacher-name">Ms. Fatima</span>
+                                                <span class="room-name">Room 205</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot ict">
+                                            <div class="subject-info">
+                                                <span class="subject-name">ICT</span>
+                                                <span class="teacher-name">Mr. Shahid</span>
+                                                <span class="room-name">Computer Lab</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot math">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Mathematics</span>
+                                                <span class="teacher-name">Mr. Rahman</span>
+                                                <span class="room-name">Room 101</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot english">
+                                            <div class="subject-info">
+                                                <span class="subject-name">English</span>
+                                                <span class="teacher-name">Ms. Fatima</span>
+                                                <span class="room-name">Room 205</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="break-row">
+                                        <td class="time-slot break-time">10:15 - 10:30</td>
+                                        <td colspan="6" class="break-slot">
+                                            <div class="break-info">
+                                                <i class="fas fa-coffee"></i>
+                                                <span>BREAK TIME</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="time-slot">10:30 - 11:15</td>
+                                        <td class="subject-slot bangla">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Bangla</span>
+                                                <span class="teacher-name">Mr. Hasan</span>
+                                                <span class="room-name">Room 103</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot ict">
+                                            <div class="subject-info">
+                                                <span class="subject-name">ICT</span>
+                                                <span class="teacher-name">Mr. Shahid</span>
+                                                <span class="room-name">Computer Lab</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot math">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Mathematics</span>
+                                                <span class="teacher-name">Mr. Rahman</span>
+                                                <span class="room-name">Room 101</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot geography">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Geography</span>
+                                                <span class="teacher-name">Ms. Ruma</span>
+                                                <span class="room-name">Room 302</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot physics">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Physics</span>
+                                                <span class="teacher-name">Dr. Ahmed</span>
+                                                <span class="room-name">Lab 201</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot chemistry">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Chemistry</span>
+                                                <span class="teacher-name">Ms. Nasreen</span>
+                                                <span class="room-name">Lab 301</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="time-slot">11:15 - 12:00</td>
+                                        <td class="subject-slot pe">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Physical Education</span>
+                                                <span class="teacher-name">Mr. Salam</span>
+                                                <span class="room-name">Sports Ground</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot geography">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Geography</span>
+                                                <span class="teacher-name">Ms. Ruma</span>
+                                                <span class="room-name">Room 302</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot bangla">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Bangla</span>
+                                                <span class="teacher-name">Mr. Hasan</span>
+                                                <span class="room-name">Room 103</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot english">
+                                            <div class="subject-info">
+                                                <span class="subject-name">English</span>
+                                                <span class="teacher-name">Ms. Fatima</span>
+                                                <span class="room-name">Room 205</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot study">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Study Period</span>
+                                                <span class="teacher-name">Class Teacher</span>
+                                                <span class="room-name">Room 105</span>
+                                            </div>
+                                        </td>
+                                        <td class="subject-slot pe">
+                                            <div class="subject-info">
+                                                <span class="subject-name">Physical Education</span>
+                                                <span class="teacher-name">Mr. Salam</span>
+                                                <span class="room-name">Sports Ground</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Legend -->
+                        <div class="timetable-legend mt-4">
+                            <h6>Subject Legend:</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="legend-item">
+                                        <span class="legend-color math"></span>
+                                        <span class="legend-text">Mathematics</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color english"></span>
+                                        <span class="legend-text">English</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color physics"></span>
+                                        <span class="legend-text">Physics</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color chemistry"></span>
+                                        <span class="legend-text">Chemistry</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="legend-item">
+                                        <span class="legend-color biology"></span>
+                                        <span class="legend-text">Biology</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color bangla"></span>
+                                        <span class="legend-text">Bangla</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color ict"></span>
+                                        <span class="legend-text">ICT</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color geography"></span>
+                                        <span class="legend-text">Geography</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+.timetable-table {
+    font-size: 12px;
+    min-width: 900px;
+}
+
+.time-column {
+    width: 120px;
+    background-color: #495057;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+.day-column {
+    width: 140px;
+    text-align: center;
+    background-color: #343a40;
+    color: white;
+    font-weight: bold;
+}
+
+.time-slot {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    color: #495057;
+}
+
+.break-time {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.subject-slot {
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #dee2e6;
+    position: relative;
+}
+
+.subject-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.subject-name {
+    font-weight: bold;
+    font-size: 11px;
+    color: white;
+}
+
+.teacher-name {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.room-name {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Subject Color Coding */
+.math { background: linear-gradient(135deg, #007bff, #0056b3); }
+.english { background: linear-gradient(135deg, #28a745, #1e7e34); }
+.physics { background: linear-gradient(135deg, #dc3545, #c82333); }
+.chemistry { background: linear-gradient(135deg, #ffc107, #e0a800); }
+.biology { background: linear-gradient(135deg, #17a2b8, #117a8b); }
+.bangla { background: linear-gradient(135deg, #6f42c1, #5a32a3); }
+.ict { background: linear-gradient(135deg, #fd7e14, #e85d04); }
+.geography { background: linear-gradient(135deg, #20c997, #1aa179); }
+.pe { background: linear-gradient(135deg, #6c757d, #5a6268); }
+.study { background: linear-gradient(135deg, #e83e8c, #c2185b); }
+
+.break-slot {
+    background: linear-gradient(135deg, #ffc107, #e0a800);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.break-info {
+    color: #212529;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.break-row {
+    background-color: #fff3cd;
+}
+
+.card-header-toolbar {
+    margin-left: auto;
+}
+
+.timetable-legend {
+    border-top: 2px solid #e9ecef;
+    padding-top: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 15px;
+    border-radius: 3px;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.legend-text {
+    font-size: 13px;
+    color: #495057;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 5px;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+@media (max-width: 768px) {
+    .timetable-table {
+        font-size: 10px;
+    }
+    
+    .subject-name {
+        font-size: 9px;
+    }
+    
+    .teacher-name {
+        font-size: 8px;
+    }
+    
+    .room-name {
+        font-size: 7px;
+    }
+}
+</style>
+
+<!-- JavaScript for interactive features -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle dropdown changes
+    document.getElementById('classSelect').addEventListener('change', function() {
+        updateTimeTable();
+    });
+    
+    document.getElementById('sectionSelect').addEventListener('change', function() {
+        updateTimeTable();
+    });
+    
+    document.getElementById('weekSelect').addEventListener('change', function() {
+        updateTimeTable();
+    });
+    
+    document.getElementById('viewType').addEventListener('change', function() {
+        updateTimeTable();
+    });
+    
+    function updateTimeTable() {
+        const classValue = document.getElementById('classSelect').value;
+        const sectionValue = document.getElementById('sectionSelect').value;
+        const weekValue = document.getElementById('weekSelect').value;
+        const viewValue = document.getElementById('viewType').value;
+        
+        // Update header
+        const header = document.querySelector('.card-title');
+        if (classValue !== 'all' && sectionValue !== 'all') {
+            const className = classValue.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const sectionName = sectionValue.toUpperCase();
+            header.innerHTML = `<i class="fas fa-calendar-week"></i> Weekly Schedule - ${className}, Section ${sectionName}`;
+        }
+        
+        console.log('Updating timetable:', { classValue, sectionValue, weekValue, viewValue });
+        // Here you would typically make an AJAX call to update the timetable
+    }
+    
+    // Demo functionality for buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (!this.getAttribute('data-toggle') && !this.getAttribute('href')) {
+                e.preventDefault();
+                alert('This feature is coming soon! This is a demo page.');
+            }
+        });
+    });
+    
+    // Add hover effects to subject slots
+    document.querySelectorAll('.subject-slot').forEach(slot => {
+        slot.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02)';
+            this.style.transition = 'transform 0.2s';
+        });
+        
+        slot.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+});
+</script>
+{% endblock %}

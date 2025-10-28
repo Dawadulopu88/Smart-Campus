@@ -1,0 +1,97 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-sm-6">
+                    <h3 class="page-title mb-0">Teachers</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Teacher List</li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 text-sm-right mt-3 mt-sm-0">
+                    {% if request.user.is_admin %}
+                    <a href="{% url 'add_teacher' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Teacher</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></div>
+                    <input id="teacherSearch" type="text" class="form-control" placeholder="Search teachers (name, email, mobile)">
+                </div>
+            </div>
+            <div class="col-md-8 text-right">
+                <span class="badge badge-info p-2">Total: {{ teachers|length }}</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="teachersTable">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Gender</th>
+                                <th>Joining Date</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for t in teachers %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><img class="rounded-circle" src="{% if t.teacher_image %}{{ t.teacher_image.url }}{% else %}{% static 'assets/img/user.jpg' %}{% endif %}" width="45" height="45" alt="{{ t.first_name }}"></td>
+                                <td><a href="{% url 'teacher_details' t.pk %}">{{ t.first_name }} {{ t.last_name }}</a></td>
+                                <td>{{ t.email }}</td>
+                                <td>{{ t.mobile }}</td>
+                                <td>{{ t.gender }}</td>
+                                <td>{{ t.joining_date|date:'Y-m-d' }}</td>
+                                <td class="text-center">
+                                    <a href="{% url 'teacher_details' t.pk %}" class="btn btn-sm btn-outline-info" title="View"><i class="fas fa-eye"></i></a>
+                                    <a href="{% url 'edit_teacher' t.pk %}" class="btn btn-sm btn-outline-primary" title="Edit"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'delete_teacher' t.pk %}" class="btn btn-sm btn-outline-danger" title="Delete" onclick="return confirm('Delete {{ t.first_name }} {{ t.last_name }}?')"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="8" class="text-center text-muted">No teachers found.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p class="mb-0">&copy; 2025 SmartCampus.</p>
+    </footer>
+</div>
+
+<script>
+// Simple client-side search filter
+document.addEventListener('DOMContentLoaded', function(){
+    const search = document.getElementById('teacherSearch');
+    const rows = document.querySelectorAll('#teachersTable tbody tr');
+    if(search){
+        search.addEventListener('keyup', function(){
+            const q = this.value.toLowerCase();
+            rows.forEach(r => {
+                const text = r.innerText.toLowerCase();
+                r.style.display = text.indexOf(q) > -1 ? '' : 'none';
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

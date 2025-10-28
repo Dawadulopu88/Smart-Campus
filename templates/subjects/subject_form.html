@@ -1,0 +1,280 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ action }} Subject</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'subject_list' %}">Subjects</a></li>
+                        <li class="breadcrumb-item active">{{ action }} Subject</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">{{ action }} Subject</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Display Messages -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Subject Information</span></h5>
+                                </div>
+                                
+                                <!-- Subject Name -->
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.name.id_for_label }}">Subject Name <span class="text-danger">*</span></label>
+                                        {{ form.name }}
+                                        {% if form.name.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.name.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                        <div class="invalid-feedback">
+                                            Please provide a valid subject name.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Subject Code -->
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.code.id_for_label }}">Subject Code <span class="text-danger">*</span></label>
+                                        {{ form.code }}
+                                        {% if form.code.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.code.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                        <div class="invalid-feedback">
+                                            Please provide a unique subject code.
+                                        </div>
+                                        <small class="form-text text-muted">
+                                            Enter a unique code for this subject (e.g., MATH101, ENG201)
+                                        </small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Department -->
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="{{ form.department.id_for_label }}">Department <span class="text-danger">*</span></label>
+                                        {{ form.department }}
+                                        {% if form.department.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.department.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                        <div class="invalid-feedback">
+                                            Please select a department.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="col-12">
+                                    <div class="form-group text-right">
+                                        <a href="{% url 'subject_list' %}" class="btn btn-secondary mr-2">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> {{ action }} Subject
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Validation Preview -->
+        {% if action == 'Add' %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Quick Reference</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-info-circle text-info"></i> Subject Code Examples</h6>
+                                <ul class="list-unstyled">
+                                    <li><span class="badge badge-primary">MATH101</span> Mathematics Fundamentals</li>
+                                    <li><span class="badge badge-success">ENG201</span> English Literature</li>
+                                    <li><span class="badge badge-warning">PHY301</span> Physics Advanced</li>
+                                    <li><span class="badge badge-info">CS401</span> Computer Science</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-lightbulb text-warning"></i> Best Practices</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success"></i> Use clear, descriptive names</li>
+                                    <li><i class="fas fa-check text-success"></i> Follow consistent code format</li>
+                                    <li><i class="fas fa-check text-success"></i> Assign to appropriate department</li>
+                                    <li><i class="fas fa-check text-success"></i> Ensure code uniqueness</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// Bootstrap form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Auto-generate subject code from name
+document.getElementById('{{ form.name.id_for_label }}').addEventListener('input', function(e) {
+    const nameField = e.target;
+    const codeField = document.getElementById('{{ form.code.id_for_label }}');
+    
+    // Only auto-generate if code field is empty
+    if (codeField.value === '') {
+        const name = nameField.value.toUpperCase();
+        const words = name.split(' ');
+        let code = '';
+        
+        if (words.length >= 2) {
+            code = words[0].substring(0, 3) + words[1].substring(0, 3);
+        } else if (words.length === 1) {
+            code = words[0].substring(0, 6);
+        }
+        
+        // Add some numbers for uniqueness suggestion
+        code += '101';
+        codeField.value = code;
+    }
+});
+
+// Real-time validation feedback
+document.getElementById('{{ form.code.id_for_label }}').addEventListener('input', function(e) {
+    const codeField = e.target;
+    const value = codeField.value.toUpperCase();
+    
+    // Auto-uppercase
+    codeField.value = value;
+    
+    // Validate format (letters + numbers)
+    const isValid = /^[A-Z0-9]+$/.test(value) && value.length >= 3;
+    
+    if (isValid) {
+        codeField.classList.remove('is-invalid');
+        codeField.classList.add('is-valid');
+    } else {
+        codeField.classList.remove('is-valid');
+        if (value.length > 0) {
+            codeField.classList.add('is-invalid');
+        }
+    }
+});
+</script>
+
+<style>
+.form-title {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-title span {
+    background: #fff;
+    padding-right: 15px;
+    color: #333;
+    font-weight: 600;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.btn {
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+.badge {
+    font-size: 12px;
+    padding: 4px 8px;
+}
+
+.list-unstyled li {
+    padding: 5px 0;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.was-validated .form-control:valid {
+    border-color: #28a745;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' fill='%2328a745' viewBox='0 0 16 16'%3e%3cpath d='M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.was-validated .form-control:invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6.4.4.4-.4'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+</style>
+{% endblock %}

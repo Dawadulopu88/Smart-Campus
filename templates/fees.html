@@ -1,0 +1,494 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ title }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Fees Management</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2">
+                        <i class="fas fa-download"></i> Export
+                    </a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addFeesModal">
+                        <i class="fas fa-plus"></i> Add New Fee
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fees Statistics Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-primary-light rounded mr-3">
+                                <i class="fas fa-dollar-sign text-primary"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Total Collected</div>
+                                <h4 class="mb-0 text-primary">৳ 2,45,000</h4>
+                                <small class="text-success">
+                                    <i class="fas fa-arrow-up"></i> +12.5% from last month
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-warning-light rounded mr-3">
+                                <i class="fas fa-clock text-warning"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Pending Fees</div>
+                                <h4 class="mb-0 text-warning">৳ 45,500</h4>
+                                <small class="text-info">
+                                    45 students pending
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-success-light rounded mr-3">
+                                <i class="fas fa-users text-success"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Students Paid</div>
+                                <h4 class="mb-0 text-success">350</h4>
+                                <small class="text-success">
+                                    <i class="fas fa-check"></i> 88.5% completion rate
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-danger-light rounded mr-3">
+                                <i class="fas fa-exclamation-triangle text-danger"></i>
+                            </div>
+                            <div class="w-100">
+                                <div class="text-muted small">Overdue</div>
+                                <h4 class="mb-0 text-danger">12</h4>
+                                <small class="text-danger">
+                                    <i class="fas fa-clock"></i> More than 30 days
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fee Structure & Recent Transactions -->
+        <div class="row">
+            <!-- Fee Structure -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-list-alt"></i> Fee Structure 2025
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Fee Type</th>
+                                        <th>Amount</th>
+                                        <th>Due Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-graduation-cap text-primary mr-2"></i>
+                                                Tuition Fee
+                                            </div>
+                                        </td>
+                                        <td>৳ 8,000</td>
+                                        <td><span class="badge badge-warning">Monthly</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-bus text-info mr-2"></i>
+                                                Transport Fee
+                                            </div>
+                                        </td>
+                                        <td>৳ 1,500</td>
+                                        <td><span class="badge badge-info">Monthly</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-utensils text-success mr-2"></i>
+                                                Meal Fee
+                                            </div>
+                                        </td>
+                                        <td>৳ 2,000</td>
+                                        <td><span class="badge badge-success">Monthly</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-book text-purple mr-2"></i>
+                                                Library Fee
+                                            </div>
+                                        </td>
+                                        <td>৳ 500</td>
+                                        <td><span class="badge badge-secondary">Semester</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-laptop text-dark mr-2"></i>
+                                                Lab Fee
+                                            </div>
+                                        </td>
+                                        <td>৳ 1,000</td>
+                                        <td><span class="badge badge-dark">Semester</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-edit"></i> Modify Fee Structure
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-receipt"></i> Recent Transactions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline">
+                            <div class="activity-item">
+                                <div class="activity-icon bg-success">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Payment Received</h6>
+                                    <p class="text-muted small mb-1">Ahmad Rahman - Class X</p>
+                                    <span class="text-success font-weight-bold">৳ 12,000</span>
+                                    <span class="text-muted small float-right">2 hours ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-primary">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Online Payment</h6>
+                                    <p class="text-muted small mb-1">Fatema Khatun - Class IX</p>
+                                    <span class="text-success font-weight-bold">৳ 8,500</span>
+                                    <span class="text-muted small float-right">5 hours ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-warning">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Fee Reminder Sent</h6>
+                                    <p class="text-muted small mb-1">Karim Uddin - Class VIII</p>
+                                    <span class="text-warning">Pending: ৳ 6,500</span>
+                                    <span class="text-muted small float-right">1 day ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-info">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Invoice Generated</h6>
+                                    <p class="text-muted small mb-1">Rashida Begum - Class VII</p>
+                                    <span class="text-info">Invoice #1025</span>
+                                    <span class="text-muted small float-right">2 days ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bg-success">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h6>Cash Payment</h6>
+                                    <p class="text-muted small mb-1">Nasir Ahmed - Class VI</p>
+                                    <span class="text-success font-weight-bold">৳ 11,500</span>
+                                    <span class="text-muted small float-right">3 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <a href="#" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-history"></i> View All Transactions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fee Collection Chart & Quick Actions -->
+        <div class="row">
+            <!-- Collection Chart -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-chart-bar"></i> Monthly Fee Collection - 2025
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="feeCollectionChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-bolt"></i> Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-block mb-2" data-toggle="modal" data-target="#collectFeeModal">
+                                <i class="fas fa-money-bill-wave mr-2"></i>
+                                Collect Fee
+                            </button>
+                            
+                            <button class="btn btn-info btn-block mb-2" data-toggle="modal" data-target="#sendReminderModal">
+                                <i class="fas fa-bell mr-2"></i>
+                                Send Reminder
+                            </button>
+                            
+                            <button class="btn btn-success btn-block mb-2" data-toggle="modal" data-target="#generateReportModal">
+                                <i class="fas fa-file-alt mr-2"></i>
+                                Generate Report
+                            </button>
+                            
+                            <button class="btn btn-warning btn-block mb-2" data-toggle="modal" data-target="#pendingFeesModal">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                View Pending
+                            </button>
+                            
+                            <button class="btn btn-secondary btn-block mb-2" data-toggle="modal" data-target="#feeSettingsModal">
+                                <i class="fas fa-cog mr-2"></i>
+                                Fee Settings
+                            </button>
+                        </div>
+                        
+                        <!-- Quick Stats -->
+                        <div class="mt-4">
+                            <h6 class="text-muted">Quick Stats</h6>
+                            <div class="small">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>This Month:</span>
+                                    <span class="text-success font-weight-bold">৳ 95,400</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>Last Month:</span>
+                                    <span class="text-info">৳ 87,200</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>This Year:</span>
+                                    <span class="text-primary font-weight-bold">৳ 8,45,600</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for enhanced styling -->
+<style>
+.avatar-large {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.1); }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.1); }
+.bg-danger-light { background-color: rgba(220, 53, 69, 0.1); }
+
+.activity-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.activity-item {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.activity-item:not(:last-child):before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 30px;
+    height: calc(100% - 10px);
+    width: 2px;
+    background: #e9ecef;
+}
+
+.activity-icon {
+    position: absolute;
+    left: -23px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+}
+
+.text-purple { color: #6f42c1 !important; }
+.badge.badge-purple { background-color: #6f42c1; }
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.d-grid {
+    display: grid;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+</style>
+
+<!-- Chart.js for fee collection chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fee Collection Chart
+    const ctx = document.getElementById('feeCollectionChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Collected (৳)',
+                data: [85000, 92000, 78000, 89000, 95000, 87000, 91000, 88000, 95400, 0, 0, 0],
+                backgroundColor: 'rgba(13, 110, 253, 0.8)',
+                borderColor: 'rgba(13, 110, 253, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Target (৳)',
+                data: [90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000],
+                backgroundColor: 'rgba(25, 135, 84, 0.3)',
+                borderColor: 'rgba(25, 135, 84, 1)',
+                borderWidth: 1,
+                type: 'line'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '৳' + value.toLocaleString();
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ৳' + context.parsed.y.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Add click animations for buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if (!this.getAttribute('data-toggle')) {
+                e.preventDefault();
+                // Simple notification for demo
+                alert('This feature is coming soon! This is a demo page.');
+            }
+        });
+    });
+
+    // Simulate real-time updates
+    setInterval(function() {
+        const randomAmount = Math.floor(Math.random() * 5000) + 1000;
+        console.log('Simulated transaction: ৳' + randomAmount);
+    }, 30000); // Every 30 seconds
+});
+</script>
+{% endblock %}

@@ -1,0 +1,328 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<style>
+.holiday-card {
+    border-left: 4px solid #28a745;
+    transition: transform 0.2s;
+}
+.holiday-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.holiday-type-national { border-left-color: #dc3545; }
+.holiday-type-religious { border-left-color: #28a745; }
+.holiday-type-international { border-left-color: #17a2b8; }
+.holiday-type-special { border-left-color: #ffc107; }
+.holiday-type-bank { border-left-color: #6c757d; }
+
+.calendar-view {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.stats-card {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.month-section {
+    margin-bottom: 30px;
+}
+
+.upcoming-holidays {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.bangladesh-flag {
+    background: linear-gradient(45deg, #006A4E, #F42A41);
+    width: 100%;
+    height: 5px;
+    margin-bottom: 15px;
+    border-radius: 2px;
+}
+</style>
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="bangladesh-flag"></div>
+                    <h3 class="page-title">
+                        <i class="fas fa-flag-checkered text-success"></i>
+                        Bangladesh Government Holidays {{ current_year }}
+                    </h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Holidays</li>
+                    </ul>
+                </div>
+                {% if user_is_admin %}
+                <div class="col-auto float-right ml-auto">
+                    <a href="{% url 'add_holiday' %}" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Add Holiday
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Year Selection and Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card calendar-view">
+                    <h4><i class="fas fa-calendar-alt"></i> Holiday Calendar {{ current_year }}</h4>
+                    <p class="mb-2">Official holidays as per Government of Bangladesh</p>
+                    
+                    <!-- Year Navigation -->
+                    <div class="btn-group mt-2" role="group">
+                        {% for year in available_years %}
+                        <a href="?year={{ year }}" 
+                           class="btn {% if year == current_year %}btn-light{% else %}btn-outline-light{% endif %}">
+                            {{ year }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h2><i class="fas fa-chart-pie"></i></h2>
+                    <h3>{{ total_holidays }}</h3>
+                    <p>Total Holidays in {{ current_year }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Holidays -->
+        {% if upcoming_holidays %}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="upcoming-holidays">
+                    <h4><i class="fas fa-clock"></i> Upcoming Holidays</h4>
+                    <div class="row">
+                        {% for holiday in upcoming_holidays %}
+                        <div class="col-md-4 mb-2">
+                            <div class="bg-white text-dark p-3 rounded">
+                                <h6 class="mb-1">{{ holiday.name }}</h6>
+                                <small>
+                                    <i class="fas fa-calendar"></i> {{ holiday.date|date:"F j, Y" }}
+                                    {% if holiday.days_until %}
+                                        <span class="badge badge-warning ml-2">{{ holiday.days_until }} days</span>
+                                    {% endif %}
+                                </small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Holiday Types Legend -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Holiday Types</h5>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <span class="badge badge-danger">National</span>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="badge badge-success">Religious</span>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="badge badge-info">International</span>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="badge badge-warning">Special</span>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="badge badge-secondary">Bank</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Holidays by Month -->
+        {% if holidays_by_month %}
+            {% for month, month_holidays in holidays_by_month.items %}
+            <div class="month-section">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="card-title mb-0">
+                            <i class="fas fa-calendar-day"></i> {{ month }} {{ current_year }}
+                            <span class="badge badge-light text-dark ml-2">{{ month_holidays|length }} holidays</span>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for holiday in month_holidays %}
+                            <div class="col-lg-6 mb-3">
+                                <div class="card holiday-card holiday-type-{{ holiday.holiday_type }}">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title">{{ holiday.name }}</h5>
+                                                <p class="card-text">
+                                                    <i class="fas fa-calendar text-primary"></i> 
+                                                    <strong>{{ holiday.date|date:"l, F j, Y" }}</strong>
+                                                </p>
+                                                {% if holiday.description %}
+                                                <p class="card-text text-muted">{{ holiday.description|truncatewords:15 }}</p>
+                                                {% endif %}
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="badge {{ holiday.get_holiday_type_display_badge }}">
+                                                    {{ holiday.get_holiday_type_display }}
+                                                </span>
+                                                {% if holiday.is_recurring %}
+                                                <br><small class="text-muted mt-1 d-block">
+                                                    <i class="fas fa-redo"></i> Annual
+                                                </small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        
+                                        {% if user_is_admin %}
+                                        <div class="mt-3">
+                                            <a href="{% url 'edit_holiday' holiday.pk %}" class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <a href="{% url 'delete_holiday' holiday.pk %}" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No holidays found for {{ current_year }}</h5>
+                        <p class="text-muted">No holidays have been added for this year yet.</p>
+                        {% if user_is_admin %}
+                        <a href="{% url 'add_holiday' %}" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Add First Holiday
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Holiday Statistics -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            <i class="fas fa-chart-bar"></i> Holiday Statistics {{ current_year }}
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <div class="card bg-danger text-white">
+                                    <div class="card-body">
+                                        <h3>{{ holiday_type_counts.national }}</h3>
+                                        <p>National Holidays</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body">
+                                        <h3>{{ holiday_type_counts.religious }}</h3>
+                                        <p>Religious Holidays</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body">
+                                        <h3>{{ holiday_type_counts.international }}</h3>
+                                        <p>International Days</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body">
+                                        <h3>{{ holiday_type_counts.special }}</h3>
+                                        <p>Special Holidays</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+<script>
+$(document).ready(function() {
+    // Smooth scrolling for month navigation
+    $('.month-section').each(function(index) {
+        $(this).delay(100 * index).fadeIn();
+    });
+    
+    // Holiday card hover effects
+    $('.holiday-card').hover(
+        function() {
+            $(this).addClass('shadow-lg');
+        },
+        function() {
+            $(this).removeClass('shadow-lg');
+        }
+    );
+    
+    // Auto-refresh upcoming holidays
+    setInterval(function() {
+        // This could be enhanced to dynamically update countdown
+        console.log('Checking for holiday updates...');
+    }, 60000); // Check every minute
+});
+</script>
+</div>
+{% endblock %}

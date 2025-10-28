@@ -1,0 +1,283 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Subjects</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Subjects</li>
+                    </ul>
+                </div>
+                {% if can_add %}
+                <div class="col-auto float-right ml-auto">
+                    <a href="{% url 'add_subject' %}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Subject
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <!-- Debug Info (remove this in production) -->
+        {% if user.is_authenticated %}
+        <div class="alert alert-info">
+            <strong>Debug Info:</strong> 
+            User: {{ user.username }} | 
+            Role: {{ user_role }} | 
+            Can Add: {{ can_add }} | 
+            Can Edit: {{ can_edit }} | 
+            Can Delete: {{ can_delete }}
+        </div>
+        {% endif %}
+
+        <!-- Filter Row -->
+        <div class="row filter-row">
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                    <input type="text" class="form-control floating" id="subject-search">
+                    <label class="focus-label">Subject Name</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus select-focus">
+                    <select class="select floating" id="department-filter">
+                        <option value="">All Departments</option>
+                        {% for subject in subjects %}
+                            <option value="{{ subject.department.name }}">{{ subject.department.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label class="focus-label">Department</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <button type="button" class="btn btn-success btn-block" onclick="filterSubjects()">
+                    Search
+                </button>
+            </div>
+        </div>
+        <!-- /Filter Row -->
+
+        <!-- Subject List -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table mb-0" id="subjects-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Subject Name</th>
+                                <th>Subject Code</th>
+                                <th>Department</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subject in subjects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a href="#" class="avatar avatar-sm mr-2">
+                                            <i class="fas fa-book-open bg-primary text-white rounded-circle p-2"></i>
+                                        </a>
+                                        <a href="#">{{ subject.name }}</a>
+                                    </h2>
+                                </td>
+                                <td>
+                                    <span class="badge badge-primary">{{ subject.code }}</span>
+                                </td>
+                                <td>{{ subject.department.name }}</td>
+                                {% if can_edit or can_delete %}
+                                <td class="text-right">
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            {% if can_edit %}
+                                            <a class="dropdown-item" href="{% url 'edit_subject' subject.pk %}">
+                                                <i class="fas fa-edit m-r-5"></i> Edit
+                                            </a>
+                                            {% endif %}
+                                            {% if can_delete %}
+                                            <a class="dropdown-item" href="{% url 'delete_subject' subject.pk %}">
+                                                <i class="fas fa-trash m-r-5"></i> Delete
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <!-- Alternative buttons for better visibility -->
+                                    <div class="btn-group ml-2" role="group">
+                                        {% if can_edit %}
+                                        <a href="{% url 'edit_subject' subject.pk %}" class="btn btn-sm btn-outline-primary" title="Edit Subject">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if can_delete %}
+                                        <a href="{% url 'delete_subject' subject.pk %}" class="btn btn-sm btn-outline-danger" title="Delete Subject">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                {% else %}
+                                <td class="text-right">
+                                    <small class="text-muted">View Only</small>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <div class="empty-state">
+                                        <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+                                        <h4>No Subjects Found</h4>
+                                        <p class="text-muted">No subjects have been added yet.</p>
+                                        {% if can_add %}
+                                        <a href="{% url 'add_subject' %}" class="btn btn-primary">
+                                            <i class="fas fa-plus"></i> Add First Subject
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /Subject List -->
+
+        <!-- Statistics Cards -->
+        {% if subjects %}
+        <div class="row mt-4">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-primary border-primary">
+                                <i class="fas fa-book-open"></i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>{{ subjects|length }}</h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">Total Subjects</h6>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary w-50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-success border-success">
+                                <i class="fas fa-building"></i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>{{ department_count }}</h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">Departments</h6>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-success w-50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function filterSubjects() {
+    const searchValue = document.getElementById('subject-search').value.toLowerCase();
+    const departmentValue = document.getElementById('department-filter').value.toLowerCase();
+    const table = document.getElementById('subjects-table');
+    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        if (row.classList.contains('empty-state')) continue;
+        
+        const subjectName = row.cells[1].textContent.toLowerCase();
+        const department = row.cells[3].textContent.toLowerCase();
+        
+        const nameMatch = subjectName.includes(searchValue);
+        const deptMatch = departmentValue === '' || department.includes(departmentValue);
+        
+        if (nameMatch && deptMatch) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    }
+}
+
+// Real-time search
+document.getElementById('subject-search').addEventListener('keyup', filterSubjects);
+document.getElementById('department-filter').addEventListener('change', filterSubjects);
+</script>
+
+<style>
+.empty-state {
+    padding: 40px 20px;
+}
+
+.dash-widget-header {
+    display: flex;
+    align-items: center;
+}
+
+.dash-widget-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    border: 2px solid;
+}
+
+.dash-count h3 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.progress {
+    height: 5px;
+}
+
+.table-avatar .avatar {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-row {
+    background: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+</style>
+{% endblock %}
